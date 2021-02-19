@@ -41,3 +41,21 @@ Scenario: Uso de mensagem pré-gravada
 	Then Eu vejo a “mensagem pré-gravada” na página do “Chat”.
 	And A mensagem é enviada para o “Chat” do outro “Usuário”.
 	And A mensagem permanece salva no na página do “Chat”.
+
+Scenario: Falha no Envio de mensagem
+	Given Eu estou como "Usuário".
+	And Eu estou na página "Chat".
+	When Eu interajo com a interface envio de mensagem.
+	And Não tem nada escrito na mensagem.
+	Then A mensagem não é enviada para o "Chat" do outro "Usuário".
+	And A mensagem não é salva na página do "Chat"
+
+Scenario: Falha na marcação de horário
+	Given Eu estou como “Usuário”.
+	And Eu estou na página "Chat".
+	When Eu interajo com a interface de criação de horário.
+	And Não preencho os horários disponiveis.
+	Then A mensagem de marcação de horário não é enviada.
+	And O sistema espera os horários serem preenchidos.
+
+
