@@ -12,7 +12,7 @@ Feature : Chat de usuários
 	Cenário 3 : Uso de mensagens pré-gravadas.
 	Cenário 4 : Falha no Envio de mensagem.
 	Cenário 5 : Falha na marcação de horário.
-	Cenário 6 : 
+	Cenário 6 : Confirmação de um horário.
 
 Scenario: Marcação de um horário
 	Given Eu estou como “Usuário”.
@@ -27,7 +27,7 @@ Scenario: Envio de mensagem
 	When Eu interajo com a interface envio de mensagem.
 	Then Eu vejo a mensagem que eu escrevi na página do “Chat”.
 	And A mensagem é enviada para o “Chat” do outro “Usuário”.
-	And A mensagem permanece salva no na página do “Chat”
+	And A mensagem permanece salva no na página do “Chat”.
 
 Scenario: Filtro de mensagem
 	Given Eu estou como “Usuário”.
