@@ -1,0 +1,23 @@
+Cenário: Escolhendo prestador de serviços
+	Como cliente da plataforma
+	Eu vejo a lista de profissionais
+	E posso navegar por essa lista
+	E posso ordená-la de uma maneira conveniente
+	Até que eu encontre um perfil interessante
+
+Cenário: Abrindo perfil do profissional
+	Como cliente da plataforma
+	Eu clico no perfil do profissional de interesse
+	E vejo informações sobre o mesmo
+	Então decido contratá-lo
+
+Cenário: Re-ordenando a lista de profissionais
+	Como cliente da plataforma
+	Eu não acho um profissional que me interesse
+	Então eu re-ordeno a lista usando algum parâmetro
+
+Cenário: Falha ao reordenar a lista
+	Como cliente da plataforma
+	Eu tento re-ordenar a lista sem sucesso
+	Então é mostrado exatamente a mesma lista anterior
+
