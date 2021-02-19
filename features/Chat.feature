@@ -9,7 +9,10 @@ Feature : Chat de usuários
 	Cenário 0 : Marcação de um horário.	
 	Cenário 1 : Envio de mensagem.
 	Cenário 2 : Filtro de mensagem.
-	Cenário 3 : Uso de mensagens pré-gravadas 
+	Cenário 3 : Uso de mensagens pré-gravadas.
+	Cenário 4 : Falha no Envio de mensagem.
+	Cenário 5 : Falha na marcação de horário.
+	Cenário 6 : 
 
 Scenario: Marcação de um horário
 	Given Eu estou como “Usuário”.
@@ -21,7 +24,7 @@ Scenario: Marcação de um horário
 Scenario: Envio de mensagem
 	Given Eu estou como “Usuário”.
 	And Eu estou na página “Chat”.
-	When 	Eu interajo com a interface envio de mensagem.
+	When Eu interajo com a interface envio de mensagem.
 	Then Eu vejo a mensagem que eu escrevi na página do “Chat”.
 	And A mensagem é enviada para o “Chat” do outro “Usuário”.
 	And A mensagem permanece salva no na página do “Chat”
@@ -58,10 +61,12 @@ Scenario: Falha na marcação de horário
 	Then A mensagem de marcação de horário não é enviada.
 	And O sistema espera os horários serem preenchidos.
 
-Scenario: Visualizando mensagens antigas
+Scenario: Confirmação de um horário
 	Given Eu estou como “Usuário”.
-	And Eu estou na página “Chat”.
-	When Eu interajo com página para ver as mensagens antigas.
-	Then As mensagens atuais são escondidas.
-	And Eu vejo as mensagens mandadas anteriormente.
-	
+	And Eu estou na página "Chat".
+	And Me foi enviada uma mensagem de marcação de horário.
+	When Eu interajo com a mensagem de marcação de horário.
+	And Eu preencho meu horário dispónivel.
+	Then Aparece o horário que eu preenchi na página do "Chat". 
+	And Meu horário é enviado ao outro “Usuário”.
+
