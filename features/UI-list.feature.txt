@@ -15,9 +15,10 @@ Cenário: Re-ordenando a lista de profissionais
 	Como cliente da plataforma
 	Eu não acho um profissional que me interesse
 	Então eu re-ordeno a lista usando algum parâmetro
+	Then ...
 
 Cenário: Falha ao reordenar a lista
 	Como cliente da plataforma
 	Eu tento re-ordenar a lista sem sucesso
 	Então é mostrado exatamente a mesma lista anterior
-
+	
