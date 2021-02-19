@@ -24,5 +24,5 @@ Cenário: Falha ao reordenar a lista
 
 Cenário: Teste maluco do Luisinho
 
-Cenário fake do fake do fake
+Cenário fake do fake do fake, ajuste
 
