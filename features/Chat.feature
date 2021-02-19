@@ -58,4 +58,10 @@ Scenario: Falha na marcação de horário
 	Then A mensagem de marcação de horário não é enviada.
 	And O sistema espera os horários serem preenchidos.
 
-
+Scenario: Visualizando mensagens antigas
+	Given Eu estou como “Usuário”.
+	And Eu estou na página “Chat”.
+	When Eu interajo com página para ver as mensagens antigas.
+	Then As mensagens atuais são escondidas.
+	And Eu vejo as mensagens mandadas anteriormente.
+	
