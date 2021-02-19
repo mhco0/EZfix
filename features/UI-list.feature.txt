@@ -21,3 +21,5 @@ Cenário: Falha ao reordenar a lista
 	Eu tento re-ordenar a lista sem sucesso
 	Então é mostrado exatamente a mesma lista anterior
 
+Cenário: Teste maluco do Luisinho
+
