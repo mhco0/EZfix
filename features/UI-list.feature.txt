@@ -21,4 +21,8 @@ Cenário: Falha ao reordenar a lista
 	Como cliente da plataforma
 	Eu tento re-ordenar a lista sem sucesso
 	Então é mostrado exatamente a mesma lista anterior
-	
+
+Cenário: Teste maluco do Luisinho
+
+Cenário fake do fake do fake
+
