@@ -74,3 +74,4 @@ Scenario: Confirmação de um horário
 // Comentário da questão 14 na master
 // Comentário para a questão 14 do roteiro 
 // Segundo comentário para a questão 14
+// ajuste: Feature nova da questão 15
