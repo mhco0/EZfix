@@ -71,3 +71,4 @@ Scenario: Confirmação de um horário
 	And Meu horário é enviado ao outro “Usuário”.
 
 // Comentário da questão 14 na master
+// Comentário para a questão 14 do roteiro 
