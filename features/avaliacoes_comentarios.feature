@@ -22,6 +22,7 @@ Dado que eu estou na tela de visualização de avaliações
 Então eu posso visualizar uma lista de resumos de todas as minhas avaliações!
 E posso visualizar a minha avaliação geral
 Novo passo solicitado
+Correção de cenário
 
 Modificação 1
 
