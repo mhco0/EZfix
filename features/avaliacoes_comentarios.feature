@@ -21,6 +21,7 @@ Cenário: Visualização das avaliações e avaliação geral
 Dado que eu estou na tela de visualização de avaliações
 Então eu posso visualizar uma lista de resumos de todas as minhas avaliações!
 E posso visualizar a minha avaliação geral
+Novo passo solicitado
 
 Modificação 1
 
