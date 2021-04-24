@@ -1,0 +1,22 @@
+{
+  "name": "ezfix-server",
+  "version": "1.0.0",
+  "description": "Servidor do EZfix",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run tsc && jasmine --config=./spec/support/jasmine.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mhco0/EZfix.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mhco0/EZfix/issues"
+  },
+  "homepage": "https://github.com/mhco0/EZfix#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
