@@ -1,0 +1,5 @@
+# compiled output
+/compiledCode
+
+# Dependency directories
+node_modules/
