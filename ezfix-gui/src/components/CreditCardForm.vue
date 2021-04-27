@@ -79,6 +79,10 @@ export default {
 </script>
 
 <style scoped>
+.v-btn {
+  color: white;
+  background: #2178b7;
+}
 .card-form {
   padding-top: 20px;
   padding-left: 100px;
@@ -140,7 +144,7 @@ export default {
   content: "";
   width: 5px;
   height: 10px;
-  border: solid blue;
+  border: solid #2178b7;
   border-width: 0 2px 2px 0;
   -webkit-transform: rotate(45deg);
   -ms-transform: rotate(45deg);

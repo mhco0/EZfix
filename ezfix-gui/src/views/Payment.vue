@@ -26,6 +26,11 @@ export default {
 </script>
 
 <style scoped>
+.v-btn {
+  color: white;
+  background: #2178b7;
+}
+
 .payment-title {
   padding-top: 65px;
   padding-left: 30px;
@@ -52,6 +57,6 @@ export default {
 }
 
 span {
-  color: blue;
+  color: #2178b7;
 }
 </style>
