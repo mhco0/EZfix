@@ -21,25 +21,38 @@
                         </v-avatar>
                     </v-col>
                 </v-row>
+                
+                <v-row>
+                    <TextArea />
+                </v-row>
             </v-card-text>
+
+            <v-card-actions>
+                <EvaluationBar class="mx-2" label="Evaluate EZfix" @rating="ezfix_rating=$event" justify="start" />
+                <v-spacer></v-spacer>
+                <v-btn color="primary black--text" rounded>Save</v-btn>
+            </v-card-actions>
         </v-card>
     </v-dialog>
 </template>
 
 <script>
 import EvaluationBar from "../components/EvaluationBar"
+import TextArea from "../components/TextArea"
 
 export default {
     data: () => ({
         attendance_rating: 0,
         punctuality_rating: 0,
         service_quality_rating: 0,
+        ezfix_rating: 0,
     }),
     props: {
         service_provider_name: String,
     },
     components: {
         EvaluationBar,
+        TextArea,
     }
 }
 </script>

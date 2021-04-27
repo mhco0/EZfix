@@ -1,5 +1,5 @@
 <template>
-    <v-row justify="center" class="my-5">
+    <v-row :justify="justify" class="my-5">
         <v-card min-width="30vw" class="rounded-xl" color="primary" rounded>
             <v-card-title class="pa-1">
                 <v-row class="ma-0 mx-8 pa-0" align="center">
@@ -23,7 +23,8 @@ export default {
         rating: 0
     }),
     props: {
-        label: String
+        label: String,
+        justify: {type: String, default: "center"}
     },
     methods: {
         emit_rating(){
