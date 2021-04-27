@@ -19,3 +19,7 @@ Scenario: Evaluating a service provider already evaluated
 Given I am at the Contracts Board page
 Given I can see a concluded service of the service provider "Flavio"
 Then I can not see the button Add a review of the service provider "Flavio"
+
+Scenario: List the previows evaluations of a service provider
+Given I am at the To contract page of the service provider "Flavio"
+Then I can see the evaluations list which has an evaluation with "Realy good service!" on its content
