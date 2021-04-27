@@ -30,7 +30,7 @@
             <v-card-actions>
                 <EvaluationBar class="mx-2" label="Evaluate EZfix" @rating="ezfix_rating=$event" justify="start" />
                 <v-spacer></v-spacer>
-                <v-btn color="primary black--text" rounded>Save</v-btn>
+                <v-btn color="primary black--text" rounded @click="save_evaluation">Save</v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
@@ -39,6 +39,7 @@
 <script>
 import EvaluationBar from "../components/EvaluationBar"
 import TextArea from "../components/TextArea"
+import evaluation from "../api/evaluation"
 
 export default {
     data: () => ({
@@ -48,11 +49,26 @@ export default {
         ezfix_rating: 0,
     }),
     props: {
+        service_id: String,
         service_provider_name: String,
     },
     components: {
         EvaluationBar,
         TextArea,
-    }
+    },
+    methods: {
+        evaluate: evaluation.evaluate,
+        save_evaluation(){
+            this.evaluate(
+                this.service_id, 
+                this.attendance_rating, 
+                this.punctuality_rating, 
+                this.service_quality_rating, 
+                this.ezfix_rating
+            );
+
+            this.$emit("close_EvaluationForm");
+        }
+    },
 }
 </script>
