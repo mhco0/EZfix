@@ -15,7 +15,7 @@
                     <v-col sm="4" cols="12">
                         <v-avatar size="200">
                             <img
-                                src="https://cdn.vuetifyjs.com/images/john.jpg"
+                                :src="avatar_url"
                                 alt="Flávio"
                             >
                         </v-avatar>
@@ -51,6 +51,7 @@ export default {
     props: {
         service_id: String,
         service_provider_name: String,
+        avatar_url: {type: String, default: "https://cdn.vuetifyjs.com/images/john.jpg"}
     },
     components: {
         EvaluationBar,
