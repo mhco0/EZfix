@@ -19,7 +19,7 @@ const routes = [
     component: ToContract,
   },
   {
-    path: "/payment",
+    path: "/payment/:provider_id",
     name: "Payment",
     component: Payment,
   },

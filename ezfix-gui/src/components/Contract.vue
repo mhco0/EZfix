@@ -2,13 +2,16 @@
   <v-container class="contract-border">
     <v-row align="end">
       <v-col cols="3" class="column1">
-        <img :src="contract.avatar" :alt="contract.name" />
+        <img
+          :src="contract.provider_avatar_url"
+          :alt="contract.provider_name"
+        />
         <div>
-          {{ contract.name }}
+          {{ contract.provider_name }}
         </div>
       </v-col>
       <v-col cols="4" class="column2">
-        <div>Hired for: {{ contract.serviceCategory }}</div>
+        <div>Hired for: {{ contract.provider_category }}</div>
         <div v-if="contract.paymentOnline">Form of payment: Online</div>
         <div v-else>Form of payment: Personally</div>
         <div v-if="contract.paymentStatus">Payment Status: Paid</div>
@@ -52,8 +55,8 @@ export default {
 <style scoped>
 .contract-border {
   padding: 10px;
-  margin-top: 1%;
-  margin-bottom: 1%;
+  margin-top: 10px;
+  margin-bottom: 10px;
   outline-style: solid;
   outline-color: #2178b7;
   outline-width: 3px;
