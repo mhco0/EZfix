@@ -1,27 +1,42 @@
 <template>
   <v-container class="contract-border">
-    <v-row>
-      <v-col>
+    <v-row align="end">
+      <v-col cols="3" class="column1">
         <img :src="contract.avatar" :alt="contract.name" />
         <div>
           {{ contract.name }}
         </div>
       </v-col>
-      <v-col>
+      <v-col cols="4" class="column2">
         <div>Hired for: {{ contract.serviceCategory }}</div>
         <div v-if="contract.paymentOnline">Form of payment: Online</div>
         <div v-else>Form of payment: Personally</div>
         <div v-if="contract.paymentStatus">Payment Status: Paid</div>
         <div v-else>Payment Status: Pending</div>
       </v-col>
-      <v-col>
-        <div v-if="contract.paymentStatus">
-          <v-btn rounded>Add a review</v-btn>
-        </div>
-        <div v-else>
-          <div><v-btn rounded>See conversations</v-btn></div>
-          <div><v-btn rounded>Pay now</v-btn></div>
-        </div>
+      <v-col cols="2" class="column3">
+        <v-icon color="#2178b7" x-large v-if="contract.paymentStatus"
+          >fas fa-check</v-icon
+        >
+      </v-col>
+      <v-col cols="3" class="column4">
+        <v-row justify="end" class="ma-0">
+          <div v-if="contract.paymentStatus">
+            <v-btn color="primary black--text" rounded small
+              >Add a review</v-btn
+            >
+          </div>
+          <div v-else>
+            <div>
+              <v-btn color="primary black--text" rounded small
+                >See conversations</v-btn
+              >
+            </div>
+            <div style="margin-top: 10px">
+              <v-btn color="primary black--text" rounded small>Pay now</v-btn>
+            </div>
+          </div>
+        </v-row>
       </v-col>
     </v-row>
   </v-container>
@@ -37,11 +52,6 @@ export default {
 </script>
 
 <style scoped>
-.v-btn {
-  background: #2178b7;
-  color: black;
-}
-
 .contract-border {
   padding: 10px;
   margin-top: 1%;
@@ -49,10 +59,27 @@ export default {
   outline-style: solid;
   outline-color: #2178b7;
   outline-width: 3px;
+  text-align: center;
+  font-weight: 600;
+  min-width: 50vw;
+  max-width: min-content;
 }
 
 img {
-  width: 25%;
+  width: 70px;
   border-radius: 50%;
+}
+
+.column1 {
+  text-align: center;
+}
+.column2 {
+  text-align: start;
+}
+.column3 {
+  text-align: center;
+}
+.column4 {
+  text-align: end;
 }
 </style>
