@@ -1,7 +1,10 @@
 import express = require('express');
 import bodyParser = require("body-parser");
+import {Evaluation} from "./schemas/evaluation";
 
-var taserver = express();
+import {db} from "./database"
+
+var ezfixserver = express();
 
 var allowCrossDomain = function(req: any, res: any, next: any) {
     res.header('Access-Control-Allow-Origin', "*");
@@ -9,6 +12,34 @@ var allowCrossDomain = function(req: any, res: any, next: any) {
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     next();
 }
-taserver.use(allowCrossDomain);
+ezfixserver.use(allowCrossDomain);
 
-taserver.use(bodyParser.json());
+ezfixserver.use(bodyParser.json());
+
+ezfixserver.post("/evaluate/:service_id", function (req: express.Request, res: express.Response) {
+    const service = db.services.find(el => el.id == Number(req.params.service_id))
+
+    if(service){
+        var evaluation: Evaluation = <Evaluation> req.body;
+
+        evaluation = service.evaluate(evaluation);
+    
+        if(evaluation){
+            res.send({"success": "A avaliação foi salva com sucesso"});
+
+            return;
+        }
+    }
+
+    res.send({"failure": "A avaliação não pôde ser feita"}); 
+})
+
+var server = ezfixserver.listen(3000, function () {
+    console.log('Example app listening on port 3000!')
+})
+  
+function closeServer(): void {
+    server.close();
+}
+  
+export { server, closeServer }
