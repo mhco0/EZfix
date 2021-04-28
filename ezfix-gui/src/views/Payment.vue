@@ -34,8 +34,13 @@ export default {
           Number(this.$route.params.provider_id),
           false,
           false
-        );
-        this.$router.push({ name: "Contracts" });
+        ).then((res) => {
+          if (res.data.success) {
+            this.$router.push({ name: "Contracts" });
+          } else {
+            alert("Service Provider doesn't exist!");
+          }
+        });
       }
     },
   },
