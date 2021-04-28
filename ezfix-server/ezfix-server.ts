@@ -17,7 +17,7 @@ ezfixserver.use(allowCrossDomain);
 ezfixserver.use(bodyParser.json());
 
 ezfixserver.post("/evaluate/:service_id", function (req: express.Request, res: express.Response) {
-    const service = db.services.find(el => el.id == Number(req.params.service_id))
+    const service = db.services.find(el => el.id == Number(req.params.service_id));
 
     if(service){
         var evaluation: Evaluation = <Evaluation> req.body;
@@ -25,13 +25,30 @@ ezfixserver.post("/evaluate/:service_id", function (req: express.Request, res: e
         evaluation = service.evaluate(evaluation);
     
         if(evaluation){
-            res.send({"success": "A avaliação foi salva com sucesso"});
+            res.send({
+                "success": "Successfull evaluation",
+                "evaluation": evaluation
+            });
 
             return;
         }
     }
 
-    res.send({"failure": "A avaliação não pôde ser feita"}); 
+    res.send({"failure": "Error in evaluation"});
+})
+
+ezfixserver.post("/listevaluations/:provider_id", function (req: express.Request, res: express.Response) {
+    const provider = db.service_providers.find(el => el.id == Number(req.params.provider_id));
+
+    if(provider){
+        const provider_services = db.services.filter(el => el.service_provider_id == Number(req.params.provider_id));
+
+        if(provider_services){
+            console.log(provider_services)
+        }
+    }
+
+    res.send({"failure": "Evaluation listing error"});
 })
 
 var server = ezfixserver.listen(3000, function () {

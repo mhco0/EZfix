@@ -13,6 +13,8 @@
                     full-width
                     label="Type here..."
                     background-color="white"
+                    v-model="text"
+                    @input="$emit('text', text)"
                 ></v-textarea>
             </v-col>
         </v-row>
@@ -26,6 +28,9 @@
 
 <script>
 export default {
+    data: () => ({
+        text: "",
+    }),
     props: {
         title: {type: String, default: "Coment"},
         send_button: {type: Boolean, default: false}

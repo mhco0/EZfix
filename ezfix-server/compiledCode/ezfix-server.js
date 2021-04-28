@@ -3,7 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.closeServer = exports.server = void 0;
 const express = require("express");
 const bodyParser = require("body-parser");
+const service_1 = require("./schemas/service");
 const database_1 = require("./database");
+database_1.db.services.push(new service_1.Service(1, 1, 1));
 var ezfixserver = express();
 var allowCrossDomain = function (req, res, next) {
     res.header('Access-Control-Allow-Origin', "*");
@@ -19,11 +21,24 @@ ezfixserver.post("/evaluate/:service_id", function (req, res) {
         var evaluation = req.body;
         evaluation = service.evaluate(evaluation);
         if (evaluation) {
-            res.send({ "success": "A avaliação foi salva com sucesso" });
+            res.send({
+                "success": "Successfull evaluation",
+                "evaluation": evaluation
+            });
             return;
         }
     }
-    res.send({ "failure": "A avaliação não pôde ser feita" });
+    res.send({ "failure": "Error in evaluation" });
+});
+ezfixserver.post("/listevaluations/:provider_id", function (req, res) {
+    const provider = database_1.db.service_providers.find(el => el.id == Number(req.params.provider_id));
+    if (provider) {
+        const provider_services = database_1.db.services.filter(el => el.service_provider_id == Number(req.params.provider_id));
+        if (provider_services) {
+            console.log(provider_services);
+        }
+    }
+    res.send({ "failure": "Evaluation listing error" });
 });
 var server = ezfixserver.listen(3000, function () {
     console.log('Example app listening on port 3000!');

@@ -1,13 +1,14 @@
 import session from "./session"
 
 export default {
-  async evaluate(service_id, attendance_rating, punctuality_rating, service_quality_rating, ezfix_rating) {
+  async evaluate(service_id, attendance_rating, punctuality_rating, service_quality_rating, ezfix_rating, coment) {
     const body = {
       "attendance_rating": attendance_rating,
       "punctuality_rating": punctuality_rating,
       "service_quality_rating": service_quality_rating,
-      "ezfix_rating": ezfix_rating
-    };
+      "ezfix_rating": ezfix_rating,
+      "coment": coment
+    }
     
     return session.post("/evaluate/"+service_id, body);
   }

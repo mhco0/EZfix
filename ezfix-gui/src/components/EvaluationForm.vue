@@ -23,7 +23,7 @@
                 </v-row>
                 
                 <v-row>
-                    <TextArea />
+                    <TextArea @text="coment=$event" />
                 </v-row>
             </v-card-text>
 
@@ -47,6 +47,7 @@ export default {
         punctuality_rating: 0,
         service_quality_rating: 0,
         ezfix_rating: 0,
+        coment: ""
     }),
     props: {
         service_id: String,
@@ -65,7 +66,8 @@ export default {
                 this.attendance_rating, 
                 this.punctuality_rating, 
                 this.service_quality_rating, 
-                this.ezfix_rating
+                this.ezfix_rating,
+                this.coment
             );
 
             this.$emit("close_EvaluationForm");
