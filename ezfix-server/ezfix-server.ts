@@ -101,6 +101,45 @@ ezfixserver.post("/service/:provider_id", function (req: express.Request, res: e
     res.send({ "failure": "Error in create service" });
 })
 
+ezfixserver.get("/listcontracts/:client_id", function (req: express.Request, res: express.Response) {
+    const client = db.clients.find(el => el.id == Number(req.params.client_id));
+
+    if (client) {
+        const client_services = db.services.filter(el => el.client_id == Number(req.params.client_id));
+
+        if (client_services) {
+            class Contract {
+                provider_name: string;
+                provider_avatar_url: string;
+                provider_category: string;
+                paymentStatus: Boolean;
+                paymentOnline: Boolean;
+            }
+            var contracts: Array<Contract> = []
+
+            client_services.forEach(service => {
+                var provider = db.service_providers.find(el => el.id == service.service_provider_id);
+                contracts.push({
+                    "provider_name": provider.name,
+                    "provider_avatar_url": provider.avatar_url,
+                    "provider_category": provider.category,
+                    "paymentStatus": service.payment_status,
+                    "paymentOnline": service.payment_online
+                })
+            })
+
+            res.send({
+                "success": "Successfull contracts listing",
+                "contracts": contracts
+            });
+
+            return;
+        }
+    }
+
+    res.send({ "failure": "Contracts listing error" });
+})
+
 var server = ezfixserver.listen(3000, function () {
     console.log('Example app listening on port 3000!')
 })
