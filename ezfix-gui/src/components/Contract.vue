@@ -28,9 +28,7 @@
           </div>
           <div v-else>
             <div>
-              <v-btn color="primary black--text" rounded small
-                >See conversations</v-btn
-              >
+              <v-btn color="primary black--text" rounded small>See chat</v-btn>
             </div>
             <div style="margin-top: 10px">
               <v-btn color="primary black--text" rounded small>Pay now</v-btn>
