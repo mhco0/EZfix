@@ -30,7 +30,7 @@
         
         <h1 class="mt-16">Reviews:</h1>
 
-        <v-card class="pa-5 rounded-xl ma-5" color="grey lighten-5" flat width="100%">    
+        <v-card class="pa-5 rounded-xl ma-5" color="grey lighten-5" flat width="100%" min-height="350">    
             <ReviewBar
                 class="mx-5" 
                 v-for="(review, i) in reviews_filtered"
@@ -41,18 +41,27 @@
 
             <v-card-actions>
                 <v-row justify="center" align="center">
-                    <v-btn icon @click="previows_coments_page">
-                        <v-icon>fas fa-arrow-left</v-icon>
-                    </v-btn>
-                    Page {{coments_page+1}} / {{Math.ceil(reviews.length/4)}}
-                    <v-btn icon @click="next_coments_page">
-                        <v-icon>fas fa-arrow-right</v-icon>
-                    </v-btn>
+                    <div :style="{'position': 'absolute', 'bottom': '0'}">
+                        <v-btn icon @click="previows_coments_page">
+                            <v-icon>fas fa-arrow-left</v-icon>
+                        </v-btn>
+                        Page {{coments_page+1}} / {{Math.ceil(reviews.length/4)}}
+                        <v-btn icon @click="next_coments_page">
+                            <v-icon>fas fa-arrow-right</v-icon>
+                        </v-btn>
+                    </div>
                 </v-row>
             </v-card-actions>
         </v-card>
 
         <TextArea title="Send a message" :send_button="true" />
+
+        <v-row justify="center" class="ma-0">
+            <v-btn color="primary" tile @click="call_payment_page">
+                Contract now
+                <v-icon class="ml-1" small>fas fa-tools</v-icon>
+            </v-btn>
+        </v-row>
     </v-container>
 </template>
 
@@ -114,6 +123,9 @@ export default {
                 this.coments_page++;
             }
         },
+        call_payment_page(){
+            this.$router.push({ name: 'Payment', params: { provider_id: this.$route.params.provider_id } })
+        }
     },
 }
 </script>
