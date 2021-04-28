@@ -85,19 +85,19 @@ export default {
             },
             {
                 client_name: "Marcos",
-                coment: " Thank you so much, my bathrom does not smell like penis anymore."
+                coment: " Thank you so much."
             },
             {
                 client_name: "Marcos",
-                coment: "Thank you so much, my bathrom does not smell like penis anymore."
+                coment: "Thank you so much."
             },
             {
                 client_name: "Marcos",
-                coment: "Thank you so much, my bathrom does not smell like penis anymore."
+                coment: "Thank you so much."
             },
             {
                 client_name: "Marcos",
-                coment: "Thank you so much, my bathrom does not smell like penis anymore."
+                coment: "Thank you so much."
             },
         ]
     }),
@@ -130,8 +130,10 @@ export default {
         }
     },
     mounted(){
-        this.get_reviews_list(this.$route.params.provider_id).then((reviews) => {
-            console.log(reviews)
+        this.get_reviews_list(this.$route.params.provider_id).then((response) => {
+            response.data.coments.forEach(coment => {
+                this.reviews.unshift(coment)
+            });
         })
     }
 }

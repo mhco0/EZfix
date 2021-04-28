@@ -6,7 +6,7 @@ import {db} from "./database"
 import { Client, ServiceProvider } from './schemas/users';
 import { Service } from './schemas/service';
 
-db.clients.push(new Client(1, "Flávio Playboy"))
+db.clients.push(new Client(1, "Sérgio"))
 db.service_providers.push(new ServiceProvider(1))
 db.services.push(new Service(1, 1, 1)); // Apenas para fins de teste
 
@@ -57,15 +57,17 @@ ezfixserver.get("/listcoments/:provider_id", function (req: express.Request, res
             var provider_coments:Array<Coment> = []
 
             provider_services.forEach(service => {
-                provider_coments.push({
-                    "client_name": db.clients.find(el => el.id == service.evaluation.evaluator_id).first_name,
-                    "coment": service.evaluation.coment
-                })
+                if(service.evaluation){
+                    provider_coments.push({
+                        "client_name": db.clients.find(el => el.id == service.evaluation.evaluator_id).first_name,
+                        "coment": service.evaluation.coment
+                    })
+                }
             })
 
             res.send({
                 "success": "Successfull evaluation listing",
-                "evaluations": provider_coments
+                "coments": provider_coments
             });
 
             return;
