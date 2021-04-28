@@ -9,10 +9,10 @@ export default {
             "payment_online": payment_online
         }
 
-        return session.post("/service/" + service_provider_id, body).then((res) => console.log(res.data));
+        return session.post("/service/" + service_provider_id, body);
     },
 
-    async get_services_list() {
-        return session.get("/listservices/");
+    async get_contracts_list(client_id) {
+        return session.get("/listcontracts/" + client_id.toString());
     }
 };
