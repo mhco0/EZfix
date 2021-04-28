@@ -15,6 +15,6 @@ export default {
   },
 
   async get_reviews_list(provider_id) {
-    return session.get("/listevaluations/"+provider_id.toString());
+    return session.get("/listcoments/"+provider_id.toString());
   }
 };

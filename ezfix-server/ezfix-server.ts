@@ -3,11 +3,12 @@ import bodyParser = require("body-parser");
 import {Evaluation} from "./schemas/evaluation";
 
 import {db} from "./database"
-import { ServiceProvider } from './schemas/users';
+import { Client, ServiceProvider } from './schemas/users';
 import { Service } from './schemas/service';
 
+db.clients.push(new Client(1, "Flávio Playboy"))
 db.service_providers.push(new ServiceProvider(1))
-db.services.push(new Service(1, 1, 1));
+db.services.push(new Service(1, 1, 1)); // Apenas para fins de teste
 
 var ezfixserver = express();
 
@@ -42,20 +43,29 @@ ezfixserver.post("/evaluate/:service_id", function (req: express.Request, res: e
     res.send({"failure": "Error in evaluation"});
 })
 
-ezfixserver.get("/listevaluations/:provider_id", function (req: express.Request, res: express.Response) {
+ezfixserver.get("/listcoments/:provider_id", function (req: express.Request, res: express.Response) {
     const provider = db.service_providers.find(el => el.id == Number(req.params.provider_id));
 
     if(provider){
         const provider_services = db.services.filter(el => el.service_provider_id == Number(req.params.provider_id));
 
         if(provider_services){
-            var provider_evaluations:Array<Evaluation> = []
+            class Coment{
+                client_name: string;
+                coment: string;
+            }
+            var provider_coments:Array<Coment> = []
 
-            provider_services.forEach(service => provider_evaluations.push(service.evaluation))
+            provider_services.forEach(service => {
+                provider_coments.push({
+                    "client_name": db.clients.find(el => el.id == service.evaluation.evaluator_id).first_name,
+                    "coment": service.evaluation.coment
+                })
+            })
 
             res.send({
                 "success": "Successfull evaluation listing",
-                "evaluations": provider_evaluations
+                "evaluations": provider_coments
             });
 
             return;
