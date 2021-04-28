@@ -15,7 +15,7 @@
         <div v-else>Payment Status: Pending</div>
       </v-col>
       <v-col cols="2" class="column3">
-        <v-icon color="#2178b7" x-large v-if="contract.paymentStatus"
+        <v-icon color="#2178b7" size="70" v-if="contract.paymentStatus"
           >fas fa-check</v-icon
         >
       </v-col>
@@ -28,9 +28,7 @@
           </div>
           <div v-else>
             <div>
-              <v-btn color="primary black--text" rounded small
-                >See conversations</v-btn
-              >
+              <v-btn color="primary black--text" rounded small>See chat</v-btn>
             </div>
             <div style="margin-top: 10px">
               <v-btn color="primary black--text" rounded small>Pay now</v-btn>
@@ -62,7 +60,7 @@ export default {
   text-align: center;
   font-weight: 600;
   min-width: 50vw;
-  max-width: min-content;
+  max-width: max-content;
 }
 
 img {
@@ -78,6 +76,7 @@ img {
 }
 .column3 {
   text-align: center;
+  align-self: center;
 }
 .column4 {
   text-align: end;
