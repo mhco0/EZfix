@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
+import ToContract from "../views/ToContract.vue";
 import Payment from "../views/Payment.vue"
 import Contracts from "../views/ContractsBoard.vue"
 
@@ -11,6 +12,11 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home,
+  },
+  {
+    path: "/tocontract/:provider_id",
+    name: "ToContract",
+    component: ToContract,
   },
   {
     path: "/payment",

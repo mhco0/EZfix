@@ -1,18 +1,20 @@
 <template>
-    <v-card class="pa-5 rounded-xl ma-5" color="grey lighten-5" tile flat width="100%">
+    <v-card class="pa-5 rounded-xl ma-5" color="grey lighten-5" flat width="100%">
         <v-row>
-            <v-col sm="1" cols="12">
+            <v-col sm="2" cols="12">
                 <div class="mt-5">
                     {{title}}:
                 </div>
             </v-col>
-            <v-col sm="11" cols="12">
+            <v-col sm="10" cols="12">
                 <v-textarea
                     outlined
                     auto-grow
                     full-width
                     label="Type here..."
                     background-color="white"
+                    v-model="text"
+                    @input="$emit('text', text)"
                 ></v-textarea>
             </v-col>
         </v-row>
@@ -26,6 +28,9 @@
 
 <script>
 export default {
+    data: () => ({
+        text: "",
+    }),
     props: {
         title: {type: String, default: "Coment"},
         send_button: {type: Boolean, default: false}
