@@ -74,6 +74,34 @@ ezfixserver.post("/service/:provider_id", function (req, res) {
     }
     res.send({ "failure": "Error in create service" });
 });
+ezfixserver.get("/listcontracts/:client_id", function (req, res) {
+    const client = database_1.db.clients.find(el => el.id == Number(req.params.client_id));
+    console.log(client);
+    if (client) {
+        const client_services = database_1.db.services.filter(el => el.client_id == Number(req.params.client_id));
+        if (client_services) {
+            class Contract {
+            }
+            var contracts = [];
+            client_services.forEach(service => {
+                var provider = database_1.db.service_providers.find(el => el.id == service.service_provider_id);
+                contracts.push({
+                    "provider_name": provider.name,
+                    "provider_avatar_url": provider.avatar_url,
+                    "provider_category": provider.category,
+                    "paymentStatus": service.payment_status,
+                    "paymentOnline": service.payment_online
+                });
+            });
+            res.send({
+                "success": "Successfull contracts listing",
+                "contracts": contracts
+            });
+            return;
+        }
+    }
+    res.send({ "failure": "Contracts listing error" });
+});
 var server = ezfixserver.listen(3000, function () {
     console.log('Example app listening on port 3000!');
 });

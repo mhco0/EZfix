@@ -85,7 +85,6 @@ ezfixserver.post("/service/:provider_id", function (req: express.Request, res: e
     if (provider) {
         var service: Service = <Service>req.body;
         service.id = service_id;
-        console.log(service);
 
         db.services.push(service);
 
@@ -109,6 +108,7 @@ ezfixserver.get("/listcontracts/:client_id", function (req: express.Request, res
 
         if (client_services) {
             class Contract {
+                id: number;
                 provider_name: string;
                 provider_avatar_url: string;
                 provider_category: string;
@@ -120,6 +120,7 @@ ezfixserver.get("/listcontracts/:client_id", function (req: express.Request, res
             client_services.forEach(service => {
                 var provider = db.service_providers.find(el => el.id == service.service_provider_id);
                 contracts.push({
+                    "id": service.id,
                     "provider_name": provider.name,
                     "provider_avatar_url": provider.avatar_url,
                     "provider_category": provider.category,
