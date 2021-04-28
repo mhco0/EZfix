@@ -30,14 +30,26 @@
         
         <h1 class="mt-16">Reviews:</h1>
 
-        <v-card class="pa-5 rounded-xl ma-5" color="grey lighten-5" flat width="100%">
+        <v-card class="pa-5 rounded-xl ma-5" color="grey lighten-5" flat width="100%">    
             <ReviewBar
                 class="mx-5" 
-                v-for="(review, i) in reviews"
+                v-for="(review, i) in reviews_filtered"
                 :key="i"
                 :client_name="review.client_name"
                 :coment="review.coment"
             />
+
+            <v-card-actions>
+                <v-row justify="center" align="center">
+                    <v-btn icon @click="previows_coments_page">
+                        <v-icon>fas fa-arrow-left</v-icon>
+                    </v-btn>
+                    Page {{coments_page+1}} / {{Math.round(reviews.length/4)}}
+                    <v-btn icon @click="next_coments_page">
+                        <v-icon>fas fa-arrow-right</v-icon>
+                    </v-btn>
+                </v-row>
+            </v-card-actions>
         </v-card>
     </v-container>
 </template>
@@ -47,6 +59,7 @@ import ReviewBar from "../components/ReviewBar"
 
 export default {
     data: () => ({
+        coments_page: 0,
         avatar_url: "https://cdn.vuetifyjs.com/images/john.jpg",
         provider_name: "Flávio Playboy",
         provider_description: "Hi, as you already know my name is Flavio and I would love to help you! I have more than 5 years of experience in house cleaning. For me, nothing is more satisfiying then a good smelling bathroom. Fun fact, I am a architecture student and a use every money that I earn here to support my studies.",
@@ -69,10 +82,34 @@ export default {
                 client_name: "Marcos",
                 coment: "Thank you so much, my bathrom does not smell like penis anymore."
             },
+            {
+                client_name: "Marcos",
+                coment: "Thank you so much, my bathrom does not smell like penis anymore."
+            },
         ]
     }),
     components: {
         ReviewBar,
+    },
+    computed: {
+        reviews_filtered(){
+            return this.reviews.slice(
+                this.coments_page*4, 
+                this.coments_page*4>this.reviews.length?this.reviews.length:this.coments_page*4+4
+            )
+        }
+    },
+    methods: {
+        previows_coments_page(){
+            if(this.coments_page > 0){
+                this.coments_page--;
+            }
+        },
+        next_coments_page(){
+            if(this.coments_page+1 < this.reviews.length/4){
+                this.coments_page++;
+            }
+        },
     },
 }
 </script>
