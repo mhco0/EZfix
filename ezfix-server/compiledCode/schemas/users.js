@@ -9,8 +9,11 @@ class Client {
 }
 exports.Client = Client;
 class ServiceProvider {
-    constructor(id) {
+    constructor(id, name, category, avatar_url) {
         this.id = id;
+        this.name = name;
+        this.category = category;
+        this.avatar_url = avatar_url;
     }
 }
 exports.ServiceProvider = ServiceProvider;
