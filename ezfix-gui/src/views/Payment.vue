@@ -9,7 +9,9 @@
         person to confirm the payment in the plataform
       </p>
       <center>
-        <v-btn type="submit" color="primary" tile>Pay in person</v-btn>
+        <v-btn type="submit" color="primary" tile @click="call_contracts_page"
+          >Pay in person</v-btn
+        >
       </center>
     </div>
   </div>
@@ -17,10 +19,25 @@
 
 <script>
 import CreditCardForm from "../components/CreditCardForm";
+import service_api from "../api/services";
 export default {
   name: "Payment",
   components: {
     CreditCardForm,
+  },
+  methods: {
+    create_new_service: service_api.create_service,
+    call_contracts_page() {
+      if (confirm("You want to pay in person. Are you sure?")) {
+        this.create_new_service(
+          1,
+          this.$route.params.provider_id,
+          false,
+          false
+        );
+        this.$router.push({ name: "Contracts" });
+      }
+    },
   },
 };
 </script>
