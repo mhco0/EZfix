@@ -1,13 +1,17 @@
 <template>
   <div>
     <div class="contracts-title">Contracts board view:</div>
+    <Contracts :contracts="contracts" />
   </div>
 </template>
 
 <script>
+import Contracts from "../components/Contracts";
 export default {
   name: "ContractsBoard",
-  components: {},
+  components: {
+    Contracts,
+  },
   data() {
     return {
       contracts: [],
@@ -46,7 +50,7 @@ export default {
 
 <style scoped>
 .contracts-title {
-  padding-top: 5%;
+  padding-top: 3%;
   padding-left: 3%;
   font-weight: 500;
   font-size: 40px;
