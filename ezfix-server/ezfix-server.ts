@@ -3,6 +3,11 @@ import bodyParser = require("body-parser");
 import {Evaluation} from "./schemas/evaluation";
 
 import {db} from "./database"
+import { ServiceProvider } from './schemas/users';
+import { Service } from './schemas/service';
+
+db.service_providers.push(new ServiceProvider(1))
+db.services.push(new Service(1, 1, 1));
 
 var ezfixserver = express();
 
@@ -37,14 +42,23 @@ ezfixserver.post("/evaluate/:service_id", function (req: express.Request, res: e
     res.send({"failure": "Error in evaluation"});
 })
 
-ezfixserver.post("/listevaluations/:provider_id", function (req: express.Request, res: express.Response) {
+ezfixserver.get("/listevaluations/:provider_id", function (req: express.Request, res: express.Response) {
     const provider = db.service_providers.find(el => el.id == Number(req.params.provider_id));
 
     if(provider){
         const provider_services = db.services.filter(el => el.service_provider_id == Number(req.params.provider_id));
 
         if(provider_services){
-            console.log(provider_services)
+            var provider_evaluations:Array<Evaluation> = []
+
+            provider_services.forEach(service => provider_evaluations.push(service.evaluation))
+
+            res.send({
+                "success": "Successfull evaluation listing",
+                "evaluations": provider_evaluations
+            });
+
+            return;
         }
     }
 

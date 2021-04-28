@@ -11,5 +11,9 @@ export default {
     }
     
     return session.post("/evaluate/"+service_id, body);
+  },
+
+  async get_reviews_list(provider_id) {
+    return session.get("/listevaluations/"+provider_id.toString());
   }
 };

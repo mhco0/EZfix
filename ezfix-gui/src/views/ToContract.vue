@@ -68,6 +68,7 @@
 <script>
 import ReviewBar from "../components/ReviewBar"
 import TextArea from "../components/TextArea"
+import evaluation_api from "../api/evaluation"
 
 export default {
     data: () => ({
@@ -113,6 +114,7 @@ export default {
         }
     },
     methods: {
+        get_reviews_list: evaluation_api.get_reviews_list,
         previows_coments_page(){
             if(this.coments_page > 0){
                 this.coments_page--;
@@ -127,5 +129,10 @@ export default {
             this.$router.push({ name: 'Payment', params: { provider_id: this.$route.params.provider_id } })
         }
     },
+    mounted(){
+        this.get_reviews_list(this.$route.params.provider_id).then((reviews) => {
+            console.log(reviews)
+        })
+    }
 }
 </script>

@@ -5,6 +5,9 @@ class Client {
 }
 exports.Client = Client;
 class ServiceProvider {
+    constructor(id) {
+        this.id = id;
+    }
 }
 exports.ServiceProvider = ServiceProvider;
 //# sourceMappingURL=users.js.map

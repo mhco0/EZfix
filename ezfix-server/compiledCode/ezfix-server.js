@@ -3,8 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.closeServer = exports.server = void 0;
 const express = require("express");
 const bodyParser = require("body-parser");
-const service_1 = require("./schemas/service");
 const database_1 = require("./database");
+const users_1 = require("./schemas/users");
+const service_1 = require("./schemas/service");
+database_1.db.service_providers.push(new users_1.ServiceProvider(1));
 database_1.db.services.push(new service_1.Service(1, 1, 1));
 var ezfixserver = express();
 var allowCrossDomain = function (req, res, next) {
@@ -30,12 +32,18 @@ ezfixserver.post("/evaluate/:service_id", function (req, res) {
     }
     res.send({ "failure": "Error in evaluation" });
 });
-ezfixserver.post("/listevaluations/:provider_id", function (req, res) {
+ezfixserver.get("/listevaluations/:provider_id", function (req, res) {
     const provider = database_1.db.service_providers.find(el => el.id == Number(req.params.provider_id));
     if (provider) {
         const provider_services = database_1.db.services.filter(el => el.service_provider_id == Number(req.params.provider_id));
         if (provider_services) {
-            console.log(provider_services);
+            var provider_evaluations = [];
+            provider_services.forEach(service => provider_evaluations.push(service.evaluation));
+            res.send({
+                "success": "Successfull evaluation listing",
+                "evaluations": provider_evaluations
+            });
+            return;
         }
     }
     res.send({ "failure": "Evaluation listing error" });
