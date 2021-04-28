@@ -9,7 +9,7 @@ export default {
             "payment_online": payment_online
         }
 
-        return session.post("/service/", body);
+        return session.post("/service/" + service_provider_id, body).then((res) => console.log(res.data));
     },
 
     async get_services_list() {

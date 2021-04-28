@@ -31,7 +31,7 @@ export default {
       if (confirm("You want to pay in person. Are you sure?")) {
         this.create_new_service(
           1,
-          this.$route.params.provider_id,
+          Number(this.$route.params.provider_id),
           false,
           false
         );
