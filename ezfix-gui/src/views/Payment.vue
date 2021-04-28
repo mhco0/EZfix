@@ -41,7 +41,7 @@ export default {
 .pay-in-person {
   padding: 20px;
   align-content: center;
-  margin-left: 60%;
+  margin-left: 790px;
   margin-top: -100px;
   position: absolute;
   width: 280px;
@@ -51,9 +51,9 @@ export default {
 }
 
 .or-text {
-  margin-left: 53%;
+  margin-left: 700px;
   margin-top: 200px;
-  font-size: 20px;
+  font-size: 23px;
 }
 
 span {

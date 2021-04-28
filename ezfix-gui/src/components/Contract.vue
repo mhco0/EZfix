@@ -52,8 +52,8 @@ export default {
 <style scoped>
 .contract-border {
   padding: 10px;
-  margin-top: 1%;
-  margin-bottom: 1%;
+  margin-top: 10px;
+  margin-bottom: 10px;
   outline-style: solid;
   outline-color: #2178b7;
   outline-width: 3px;
