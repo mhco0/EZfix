@@ -44,18 +44,21 @@
                     <v-btn icon @click="previows_coments_page">
                         <v-icon>fas fa-arrow-left</v-icon>
                     </v-btn>
-                    Page {{coments_page+1}} / {{Math.round(reviews.length/4)}}
+                    Page {{coments_page+1}} / {{Math.ceil(reviews.length/4)}}
                     <v-btn icon @click="next_coments_page">
                         <v-icon>fas fa-arrow-right</v-icon>
                     </v-btn>
                 </v-row>
             </v-card-actions>
         </v-card>
+
+        <TextArea title="Send a message" :send_button="true" />
     </v-container>
 </template>
 
 <script>
 import ReviewBar from "../components/ReviewBar"
+import TextArea from "../components/TextArea"
 
 export default {
     data: () => ({
@@ -90,6 +93,7 @@ export default {
     }),
     components: {
         ReviewBar,
+        TextArea
     },
     computed: {
         reviews_filtered(){
