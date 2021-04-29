@@ -20,6 +20,7 @@
 <script>
 import CreditCardForm from "../components/CreditCardForm";
 import service_api from "../api/services";
+import payment_api from "../api/payment";
 export default {
   name: "Payment",
   components: {
@@ -28,9 +29,12 @@ export default {
   methods: {
     create_new_service: service_api.create_service,
     update_a_service: service_api.update_service,
+    auth_card: payment_api.auth_card,
     credit_card_payment(newCard) {
-      this.call_contracts_page(true, true);
-      console.log(newCard);
+      this.auth_card(newCard).then((res) => {
+        console.log(res.data);
+      });
+      //this.call_contracts_page(true, true);
     },
     pay_in_person() {
       if (confirm("You want to pay in person. Are you sure?")) {
