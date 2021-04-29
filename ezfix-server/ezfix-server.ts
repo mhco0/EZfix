@@ -38,7 +38,7 @@ ezfixserver.post("/evaluate/:service_id", function (req: express.Request, res: e
 
     if (service) {
         var evaluation: Evaluation = <Evaluation>req.body;
-
+        
         evaluation = service.evaluate(evaluation);
     
         if(evaluation){
@@ -114,8 +114,14 @@ ezfixserver.post("/service/:provider_id", function (req: express.Request, res: e
     if (provider) {
         var service: Service = <Service>req.body;
         service.id = service_id;
-
-        db.services.push(service);
+        
+        db.services.push(new Service(
+            service_id, 
+            service.client_id, 
+            service.service_provider_id,
+            service.payment_status,
+            service.payment_online
+        ));
 
         res.send({
             "success": "Successfull service create",
