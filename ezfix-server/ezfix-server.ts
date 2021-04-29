@@ -21,7 +21,6 @@ db.service_providers.push(new ServiceProvider(2, "Flávio", "Cap", "I'm Good","H
 db.service_providers.push(new ServiceProvider(3, "Barnabé", "Cap", "I'm better","House Cleaning", "https://randomuser.me/api/portraits/men/29.jpg"))
 db.service_providers.push(new ServiceProvider(4, "Joana", "Cap", "I'm way better","House Cleaning", "https://randomuser.me/api/portraits/women/2.jpg"))
 
-
 var ezfixserver = express();
 
 var allowCrossDomain = function (req: any, res: any, next: any) {
@@ -151,7 +150,7 @@ ezfixserver.get("/listcontracts/:client_id", function (req: express.Request, res
                 var provider = db.service_providers.find(el => el.id == service.service_provider_id);
                 contracts.push({
                     "id": service.id,
-                    "provider_name": provider.name,
+                    "provider_name": provider.first_name + " " + provider.last_name,
                     "provider_avatar_url": provider.avatar_url,
                     "provider_category": provider.category,
                     "paymentStatus": service.payment_status,
