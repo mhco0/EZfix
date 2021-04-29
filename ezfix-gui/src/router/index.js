@@ -2,8 +2,9 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import ToContract from "../views/ToContract.vue";
-import Payment from "../views/Payment.vue"
-import Contracts from "../views/ContractsBoard.vue"
+import Payment from "../views/Payment.vue";
+import Contracts from "../views/ContractsBoard.vue";
+import Chat from "../views/Chat.vue";
 
 Vue.use(VueRouter);
 
@@ -28,6 +29,11 @@ const routes = [
     name: "Contracts",
     component: Contracts,
   },
+  {
+    path: "/chat/:provider_id/:client_id",
+    name: "Chat",
+    component: Chat,
+  }
 ];
 
 const router = new VueRouter({
