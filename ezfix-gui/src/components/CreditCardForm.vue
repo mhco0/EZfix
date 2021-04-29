@@ -66,8 +66,8 @@ export default {
         cardHolder: this.cardHolder,
         saveCard: this.saveCard,
       };
-      console.log("Save card:", this.saveCard);
       this.$emit("pay-with-card", newCard);
+      //Rafactor this code to a new method clearForm
       this.cardNumber = "";
       this.expirationDate = "";
       this.cvv = "";
