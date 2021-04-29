@@ -6,9 +6,20 @@ import {db} from "./database"
 import { Client, ServiceProvider } from './schemas/users';
 import { Service } from './schemas/service';
 
+//Adicionando o cliente
 db.clients.push(new Client(1, "Sérgio"))
-db.service_providers.push(new ServiceProvider(1))
-db.services.push(new Service(1, 1, 1)); // Apenas para fins de teste
+
+//Adicionando os providers
+db.service_providers.push(new ServiceProvider(
+    1, 
+    "Flávio", 
+    "Playboy", 
+    "Hi, as you already know my name is Flavio and I would love to help you! I have more than 5 years of experience in house cleaning. For me, nothing is more satisfiying then a good smelling bathroom. Fun fact, I am a architecture student and a use every money that I earn here to support my studies.",
+    "http://img.ibxk.com.br/2015/08/27/27151624778422.jpg?w=1040"
+));
+
+
+db.services.push(new Service(1, 1, 1)); //Apenas para fins de teste
 
 var ezfixserver = express();
 
@@ -31,7 +42,7 @@ ezfixserver.post("/evaluate/:service_id", function (req: express.Request, res: e
         evaluation = service.evaluate(evaluation);
     
         if(evaluation){
-            res.send({
+            res.status(200).send({
                 "success": "Successfull evaluation",
                 "evaluation": evaluation
             });
@@ -40,7 +51,7 @@ ezfixserver.post("/evaluate/:service_id", function (req: express.Request, res: e
         }
     }
 
-    res.send({"failure": "Error in evaluation"});
+    res.status(400).send({"failure": "Error in evaluation"});
 })
 
 ezfixserver.get("/listcoments/:provider_id", function (req: express.Request, res: express.Response) {
@@ -65,7 +76,7 @@ ezfixserver.get("/listcoments/:provider_id", function (req: express.Request, res
                 }
             })
 
-            res.send({
+            res.status(200).send({
                 "success": "Successfull evaluation listing",
                 "coments": provider_coments
             });
@@ -74,11 +85,24 @@ ezfixserver.get("/listcoments/:provider_id", function (req: express.Request, res
         }
     }
 
-    res.send({"failure": "Evaluation listing error"});
+    res.status(400).send({"failure": "Evaluation listing error"});
+})
+
+ezfixserver.get("/provider/:provider_id", function (req: express.Request, res: express.Response) {
+    const provider = db.service_providers.find(el => el.id == Number(req.params.provider_id));
+
+    if(provider){
+        res.status(200).send({
+            "success": "Successfull provider getting",
+            "provider": provider
+        });
+    }
+
+    res.status(400).send({"failure": "Provider getting error"});
 })
 
 var server = ezfixserver.listen(3000, function () {
-    console.log('Example app listening on port 3000!')
+    console.log('EZfix app listening on port 3000!')
 })
   
 function closeServer(): void {

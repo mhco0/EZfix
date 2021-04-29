@@ -69,15 +69,16 @@
 import ReviewBar from "../components/ReviewBar"
 import TextArea from "../components/TextArea"
 import evaluation_api from "../api/evaluation"
+import provider_api from "../api/provider"
 
 export default {
     data: () => ({
         coments_page: 0,
-        avatar_url: "https://cdn.vuetifyjs.com/images/john.jpg",
-        provider_name: "Flávio Playboy",
-        provider_description: "Hi, as you already know my name is Flavio and I would love to help you! I have more than 5 years of experience in house cleaning. For me, nothing is more satisfiying then a good smelling bathroom. Fun fact, I am a architecture student and a use every money that I earn here to support my studies.",
-        provider_average_evaluations: "4.8",
-        provider_jobs_number: 27,
+        avatar_url: "",
+        provider_name: "",
+        provider_description: "",
+        provider_average_evaluations: 0,
+        provider_jobs_number: 0,
         reviews: [
             {
                 client_name: "Thales",
@@ -115,6 +116,7 @@ export default {
     },
     methods: {
         get_reviews_list: evaluation_api.get_reviews_list,
+        get_provider: provider_api.get_provider,
         previows_coments_page(){
             if(this.coments_page > 0){
                 this.coments_page--;
@@ -134,6 +136,16 @@ export default {
             response.data.coments.forEach(coment => {
                 this.reviews.unshift(coment)
             });
+        });
+
+        this.get_provider(this.$route.params.provider_id).then((response) => {
+            const provider = response.data.provider
+
+            if(provider.avatar_url) this.avatar_url = provider.avatar_url
+            this.provider_name = provider.first_name + " " + provider.last_name
+            this.provider_description = provider.description
+            this.provider_average_evaluations = provider.evaluations_average.toFixed(1);
+            this.provider_jobs_number = provider.jobs_number
         })
     }
 }
