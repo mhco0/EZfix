@@ -1,5 +1,12 @@
 <template>
   <v-container class="contract-border">
+    <Evaluation
+      v-if="showEvaluation"
+      :service_id="contract.id"
+      :service_provider_name="contract.provider_name"
+      :avatar_url="contract.provider_avatar_url"
+      @close_EvaluationForm="toggleEvaluation"
+    />
     <v-row align="end">
       <v-col cols="3" class="column1">
         <img
@@ -25,7 +32,11 @@
       <v-col cols="3" class="column4">
         <v-row justify="end" class="ma-0">
           <div v-if="contract.paymentStatus">
-            <v-btn color="primary black--text" rounded small
+            <v-btn
+              color="primary black--text"
+              rounded
+              small
+              @click="toggleEvaluation"
               >Add a review</v-btn
             >
           </div>
@@ -44,10 +55,24 @@
 </template>
 
 <script>
+import Evaluation from "../components/EvaluationForm";
 export default {
   name: "Contract",
   props: {
     contract: Object,
+  },
+  components: {
+    Evaluation,
+  },
+  data() {
+    return {
+      showEvaluation: false,
+    };
+  },
+  methods: {
+    toggleEvaluation() {
+      this.showEvaluation = !this.showEvaluation;
+    },
   },
 };
 </script>
