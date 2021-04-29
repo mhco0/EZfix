@@ -9,11 +9,22 @@ class Client {
 }
 exports.Client = Client;
 class ServiceProvider {
-    constructor(id, name, category, avatar_url) {
+    constructor(id, first_name, last_name, description, category, avatar_url) {
         this.id = id;
-        this.name = name;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.description = description;
         this.category = category;
-        this.avatar_url = avatar_url;
+        if (avatar_url)
+            this.avatar_url = avatar_url;
+        this.evaluations_average = 5.0;
+        this.jobs_number = 0;
+    }
+    update_evaluation_average(new_grade) {
+        this.evaluations_average = (this.evaluations_average + new_grade) / 2;
+    }
+    increase_jobs_number() {
+        this.jobs_number++;
     }
 }
 exports.ServiceProvider = ServiceProvider;

@@ -11,7 +11,8 @@ export default {
       "coment": coment
     }
     
-    return session.post("/evaluate/" + service_id, body);
+
+    return session.post("/evaluate/"+service_id.toString(), body);
   },
 
   async get_reviews_list(provider_id) {
