@@ -32,7 +32,7 @@
 
         <v-card class="pa-5 rounded-xl ma-5" color="grey lighten-5" flat width="100%" min-height="350">    
             <ReviewBar
-                class="mx-5" 
+                class="mx-5"
                 v-for="(review, i) in reviews_filtered"
                 :key="i"
                 :client_name="review.client_name"
