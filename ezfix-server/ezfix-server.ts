@@ -6,11 +6,6 @@ import { db } from "./database"
 import { Client, ServiceProvider } from './schemas/users';
 import { Service } from './schemas/service';
 
-db.clients.push(new Client(1, "Sérgio"))
-db.service_providers.push(new ServiceProvider(1, "Flávio Cap", "House Cleaning", "https://randomuser.me/api/portraits/men/3.jpg"))
-db.service_providers.push(new ServiceProvider(2, "Barnabé Cap", "House Cleaning", "https://randomuser.me/api/portraits/men/29.jpg"))
-db.service_providers.push(new ServiceProvider(3, "Joana Cap", "House Cleaning", "https://randomuser.me/api/portraits/women/2.jpg"))
-
 var ezfixserver = express();
 
 var allowCrossDomain = function (req: any, res: any, next: any) {
@@ -121,7 +116,7 @@ ezfixserver.get("/listcontracts/:client_id", function (req: express.Request, res
                 var provider = db.service_providers.find(el => el.id == service.service_provider_id);
                 contracts.push({
                     "id": service.id,
-                    "provider_name": provider.name,
+                    "provider_name": provider.first_name + " " + provider.last_name,
                     "provider_avatar_url": provider.avatar_url,
                     "provider_category": provider.category,
                     "paymentStatus": service.payment_status,
