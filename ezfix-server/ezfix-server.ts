@@ -5,6 +5,7 @@ import { Evaluation } from "./schemas/evaluation";
 import { db } from "./database"
 import { Client, ServiceProvider } from './schemas/users';
 import { Service } from './schemas/service';
+import { Card } from "./schemas/card";
 
 //Adicionando o cliente
 db.clients.push(new Client(1, "Sérgio"))
@@ -20,6 +21,14 @@ db.service_providers.push(new ServiceProvider(
 db.service_providers.push(new ServiceProvider(2, "Flávio", "Cap", "I'm Good", "House Cleaning", "https://randomuser.me/api/portraits/men/3.jpg"))
 db.service_providers.push(new ServiceProvider(3, "Barnabé", "Cap", "I'm better", "House Cleaning", "https://randomuser.me/api/portraits/men/29.jpg"))
 db.service_providers.push(new ServiceProvider(4, "Joana", "Cap", "I'm way better", "House Cleaning", "https://randomuser.me/api/portraits/women/2.jpg"))
+
+db.cards.push(new Card("Sergio Soares", "1111222233334444", "101", 11, 2025))
+db.cards.push(new Card("Sergio Soares", "2222333344445555", "202", 11, 2025))
+db.cards.push(new Card("Sergio Soares", "1234123412341234", "303", 11, 2025))
+db.cards.push(new Card("Thalisson Tavares", "3333444455556666", "404", 11, 2025))
+db.cards.push(new Card("Gabriel Marques", "4444555566667777", "505", 11, 2025))
+db.cards.push(new Card("Luis Pereira", "5555666677778888", "606", 11, 2025))
+db.cards.push(new Card("Marcos Heitor", "6666777788889999", "707", 11, 2025))
 
 var ezfixserver = express();
 
@@ -196,6 +205,27 @@ ezfixserver.get("/listcontracts/:client_id", function (req: express.Request, res
         }
     }
     res.send({ "failure": "Contracts listing error" });
+})
+
+function checkCardMatch(card1: Card, card2: Card): Boolean {
+    return (card1.cardName == card2.cardName
+        && card1.cardNum == card2.cardNum
+        && card1.cvv == card2.cvv
+        && card1.expiryMonth == card2.expiryMonth
+        && card1.expiryYear == card2.expiryYear);
+}
+ezfixserver.post("/payment/", function (req: express.Request, res: express.Response) {
+    var card: Card = <Card>req.body["card"];
+    console.log(card);
+    if (card) {
+        var match = db.cards.find(el => checkCardMatch(el, card));
+        if (match) {
+            res.status(200).send({
+                "success": "Successfull payment",
+            });
+        }
+    }
+    res.send({ "failure": "Payment error" });
 })
 
 var server = ezfixserver.listen(3000, function () {
