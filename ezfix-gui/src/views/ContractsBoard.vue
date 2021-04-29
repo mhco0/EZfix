@@ -23,7 +23,6 @@ export default {
   },
   mounted() {
     this.get_contracts_list(1).then((response) => {
-      console.log(response.data);
       response.data.contracts.forEach((contract) => {
         this.contracts.unshift(contract);
       });

@@ -32,9 +32,15 @@ export default {
     auth_card: payment_api.auth_card,
     credit_card_payment(newCard) {
       this.auth_card(newCard).then((res) => {
-        console.log(res.data);
+        if (res.data.success) {
+          alert("Successful payment!");
+          this.call_contracts_page(true, true);
+        } else {
+          alert(
+            "Your payment failure, please review your credit card information!"
+          );
+        }
       });
-      //this.call_contracts_page(true, true);
     },
     pay_in_person() {
       if (confirm("You want to pay in person. Are you sure?")) {
@@ -51,7 +57,7 @@ export default {
         if (res.data.success) {
           this.$router.push({ name: "Contracts" });
         } else {
-          alert("Service Provider doesn't exist!");
+          alert("The link you access is invalid!");
         }
       });
     },

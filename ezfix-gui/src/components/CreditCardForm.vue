@@ -96,7 +96,7 @@ export default {
         cardNumber: this.cardNumber,
         expirationM: Number(this.expirationM),
         expirationY: Number(this.expirationY),
-        cvv: Number(this.cvv),
+        cvv: this.cvv,
         cardHolder: this.cardHolder,
         saveCard: this.saveCard,
       };
