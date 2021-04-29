@@ -24,17 +24,17 @@ export class ServiceProvider {
         this.last_name = last_name;
         this.description = description;
         this.category = category;
-        if (avatar_url) this.avatar_url = avatar_url;
+        if(avatar_url) this.avatar_url = avatar_url;
 
         this.evaluations_average = 5.0;
         this.jobs_number = 0;
     }
 
-    update_evaluation_average(new_grade: number) {
-        this.evaluations_average = (this.evaluations_average + new_grade) / 2;
+    update_evaluation_average(new_grade: number){
+        this.evaluations_average = (this.evaluations_average + new_grade)/2;
     }
 
-    increase_jobs_number() {
+    increase_jobs_number(){
         this.jobs_number++;
     }
 }

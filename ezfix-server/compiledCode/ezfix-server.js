@@ -5,10 +5,13 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const database_1 = require("./database");
 const users_1 = require("./schemas/users");
+const service_1 = require("./schemas/service");
+//Adicionando o cliente
 database_1.db.clients.push(new users_1.Client(1, "Sérgio"));
-database_1.db.service_providers.push(new users_1.ServiceProvider(1, "Flávio Cap", "House Cleaning", "https://randomuser.me/api/portraits/men/3.jpg"));
-database_1.db.service_providers.push(new users_1.ServiceProvider(2, "Barnabé Cap", "House Cleaning", "https://randomuser.me/api/portraits/men/29.jpg"));
-database_1.db.service_providers.push(new users_1.ServiceProvider(3, "Joana Cap", "House Cleaning", "https://randomuser.me/api/portraits/women/2.jpg"));
+//Adicionando os providers
+database_1.db.service_providers.push(new users_1.ServiceProvider(1, "Flávio", "Playboy", "Hi, as you already know my name is Flavio and I would love to help you! I have more than 5 years of experience in house cleaning. For me, nothing is more satisfiying then a good smelling bathroom. Fun fact, I am a architecture student and a use every money that I earn here to support my studies.", "http://img.ibxk.com.br/2015/08/27/27151624778422.jpg?w=1040"));
+database_1.db.services.push(new service_1.Service(1, 1, 1)); //Apenas para fins de teste
+
 var ezfixserver = express();
 var allowCrossDomain = function (req, res, next) {
     res.header('Access-Control-Allow-Origin', "*");
@@ -24,14 +27,19 @@ ezfixserver.post("/evaluate/:service_id", function (req, res) {
         var evaluation = req.body;
         evaluation = service.evaluate(evaluation);
         if (evaluation) {
-            res.send({
-                "success": "Successfull evaluation",
-                "evaluation": evaluation
-            });
-            return;
+            const provider = database_1.db.service_providers.find(el => el.id == service.service_provider_id);
+            if (provider) {
+                const new_grade = (evaluation.attendance_rating + evaluation.punctuality_rating + evaluation.service_quality_rating) / 3;
+                provider.update_evaluation_average(new_grade);
+                res.status(200).send({
+                    "success": "Successfull evaluation",
+                    "evaluation": evaluation
+                });
+                return;
+            }
         }
     }
-    res.send({ "failure": "Error in evaluation" });
+    res.status(400).send({ "failure": "Error in evaluation" });
 });
 ezfixserver.get("/listcoments/:provider_id", function (req, res) {
     const provider = database_1.db.service_providers.find(el => el.id == Number(req.params.provider_id));
@@ -49,14 +57,24 @@ ezfixserver.get("/listcoments/:provider_id", function (req, res) {
                     });
                 }
             });
-            res.send({
+            res.status(200).send({
                 "success": "Successfull evaluation listing",
                 "coments": provider_coments
             });
             return;
         }
     }
-    res.send({ "failure": "Evaluation listing error" });
+    res.status(400).send({ "failure": "Evaluation listing error" });
+});
+ezfixserver.get("/provider/:provider_id", function (req, res) {
+    const provider = database_1.db.service_providers.find(el => el.id == Number(req.params.provider_id));
+    if (provider) {
+        res.status(200).send({
+            "success": "Successfull provider getting",
+            "provider": provider
+        });
+    }
+    res.status(400).send({ "failure": "Provider getting error" });
 });
 ezfixserver.post("/service/:provider_id", function (req, res) {
     const provider = database_1.db.service_providers.find(el => el.id == Number(req.params.provider_id));
@@ -103,7 +121,7 @@ ezfixserver.get("/listcontracts/:client_id", function (req, res) {
     res.send({ "failure": "Contracts listing error" });
 });
 var server = ezfixserver.listen(3000, function () {
-    console.log('Example app listening on port 3000!');
+    console.log('EZfix app listening on port 3000!');
 });
 exports.server = server;
 function closeServer() {

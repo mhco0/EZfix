@@ -1,7 +1,7 @@
 <template>
     <v-row justify="center" class="my-5">
         <v-card width="100%" class="rounded-xl" color="primary" rounded>
-            <v-card-text class="pa-3 pl-10 black--text">
+            <v-card-text class="pa-3 pl-10 black--text" id="reviewtext">
                 {{client_name}}: {{coment}}
             </v-card-text>
         </v-card>
