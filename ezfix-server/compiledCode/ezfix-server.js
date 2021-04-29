@@ -107,7 +107,8 @@ ezfixserver.get("/listcontracts/:client_id", function (req, res) {
                     "provider_avatar_url": provider.avatar_url,
                     "provider_category": provider.category,
                     "paymentStatus": service.payment_status,
-                    "paymentOnline": service.payment_online
+                    "paymentOnline": service.payment_online,
+                    "has_evaluation": service.evaluation != undefined
                 });
             });
             res.send({

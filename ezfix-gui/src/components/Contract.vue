@@ -37,6 +37,7 @@
               rounded
               small
               @click="toggleEvaluation"
+              v-if="!contract.has_evaluation"
               >Add a review</v-btn
             >
           </div>
@@ -72,6 +73,10 @@ export default {
   methods: {
     toggleEvaluation() {
       this.showEvaluation = !this.showEvaluation;
+
+      if(!this.showEvaluation){
+        this.$emit("update-contracts");
+      }
     },
   },
 };
