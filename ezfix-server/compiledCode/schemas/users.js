@@ -9,11 +9,12 @@ class Client {
 }
 exports.Client = Client;
 class ServiceProvider {
-    constructor(id, first_name, last_name, description, avatar_url) {
+    constructor(id, first_name, last_name, description, category, avatar_url) {
         this.id = id;
         this.first_name = first_name;
         this.last_name = last_name;
         this.description = description;
+        this.category = category;
         if (avatar_url)
             this.avatar_url = avatar_url;
         this.evaluations_average = 5.0;
@@ -24,7 +25,6 @@ class ServiceProvider {
     }
     increase_jobs_number() {
         this.jobs_number++;
-
     }
 }
 exports.ServiceProvider = ServiceProvider;

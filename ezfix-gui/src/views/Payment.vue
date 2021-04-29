@@ -32,8 +32,8 @@ export default {
         this.create_new_service(
           1,
           Number(this.$route.params.provider_id),
-          false,
-          false
+          true,
+          true
         ).then((res) => {
           if (res.data.success) {
             this.$router.push({ name: "Contracts" });

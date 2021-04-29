@@ -50,7 +50,7 @@ export default {
         coment: ""
     }),
     props: {
-        service_id: String,
+        service_id: Number,
         service_provider_name: String,
         avatar_url: {type: String, default: "https://cdn.vuetifyjs.com/images/john.jpg"}
     },
