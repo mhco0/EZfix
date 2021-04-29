@@ -27,6 +27,7 @@ export default {
   },
   methods: {
     create_new_service: service_api.create_service,
+    update_a_service: service_api.update_service,
     credit_card_payment(newCard) {
       this.call_contracts_page(true, true);
       console.log(newCard);
@@ -36,12 +37,12 @@ export default {
         this.call_contracts_page(false, false);
       }
     },
-    create_service(paymentStatus, paymentOnline) {
+    create_service(payment_status, payment_online) {
       this.create_new_service(
         1,
         Number(this.$route.params.provider_id),
-        paymentStatus,
-        paymentOnline
+        payment_status,
+        payment_online
       ).then((res) => {
         if (res.data.success) {
           this.$router.push({ name: "Contracts" });
@@ -50,11 +51,23 @@ export default {
         }
       });
     },
-    call_contracts_page(paymentStatus, paymentOnline) {
-      if (!this.$route.params.service_id) {
-        this.create_service(paymentStatus, paymentOnline);
+    update_service(service_id, payment_status, payment_online) {
+      this.update_a_service(service_id, payment_status, payment_online).then(
+        (res) => {
+          if (res.data.success) {
+            this.$router.push({ name: "Contracts" });
+          } else {
+            alert("update Service error!");
+          }
+        }
+      );
+    },
+    call_contracts_page(payment_status, payment_online) {
+      var service_id = this.$route.params.service_id;
+      if (!service_id) {
+        this.create_service(payment_status, payment_online);
       } else {
-        console.log("update service", paymentStatus, paymentOnline);
+        this.update_service(service_id, payment_status, payment_online);
       }
     },
   },
