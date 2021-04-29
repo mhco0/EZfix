@@ -2,20 +2,23 @@
   <v-container class="contract-border">
     <v-row align="end">
       <v-col cols="3" class="column1">
-        <img :src="contract.avatar" :alt="contract.name" />
+        <img
+          :src="contract.provider_avatar_url"
+          :alt="contract.provider_name"
+        />
         <div>
-          {{ contract.name }}
+          {{ contract.provider_name }}
         </div>
       </v-col>
       <v-col cols="4" class="column2">
-        <div>Hired for: {{ contract.serviceCategory }}</div>
+        <div>Hired for: {{ contract.provider_category }}</div>
         <div v-if="contract.paymentOnline">Form of payment: Online</div>
         <div v-else>Form of payment: Personally</div>
         <div v-if="contract.paymentStatus">Payment Status: Paid</div>
         <div v-else>Payment Status: Pending</div>
       </v-col>
       <v-col cols="2" class="column3">
-        <v-icon color="#2178b7" x-large v-if="contract.paymentStatus"
+        <v-icon color="#2178b7" size="70" v-if="contract.paymentStatus"
           >fas fa-check</v-icon
         >
       </v-col>
@@ -28,9 +31,7 @@
           </div>
           <div v-else>
             <div>
-              <v-btn color="primary black--text" rounded small
-                >See conversations</v-btn
-              >
+              <v-btn color="primary black--text" rounded small>See chat</v-btn>
             </div>
             <div style="margin-top: 10px">
               <v-btn color="primary black--text" rounded small>Pay now</v-btn>
@@ -54,15 +55,15 @@ export default {
 <style scoped>
 .contract-border {
   padding: 10px;
-  margin-top: 1%;
-  margin-bottom: 1%;
+  margin-top: 10px;
+  margin-bottom: 10px;
   outline-style: solid;
   outline-color: #2178b7;
   outline-width: 3px;
   text-align: center;
   font-weight: 600;
   min-width: 50vw;
-  max-width: min-content;
+  max-width: max-content;
 }
 
 img {
@@ -78,6 +79,7 @@ img {
 }
 .column3 {
   text-align: center;
+  align-self: center;
 }
 .column4 {
   text-align: end;

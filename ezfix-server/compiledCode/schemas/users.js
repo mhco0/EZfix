@@ -24,6 +24,7 @@ class ServiceProvider {
     }
     increase_jobs_number() {
         this.jobs_number++;
+
     }
 }
 exports.ServiceProvider = ServiceProvider;

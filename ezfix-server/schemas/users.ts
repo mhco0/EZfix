@@ -2,7 +2,7 @@ export class Client {
     id: number;
     first_name: string;
 
-    constructor(id: number, first_name: string){
+    constructor(id: number, first_name: string) {
         this.id = id;
         this.first_name = first_name;
     }
@@ -16,12 +16,14 @@ export class ServiceProvider {
     description: string;
     evaluations_average: number;
     jobs_number: number;
+    category: string;
 
-    constructor(id: number, first_name: string, last_name: string, description: string, avatar_url?: string,) {
+    constructor(id: number, first_name: string, last_name: string, description: string, category: string, avatar_url?: string,) {
         this.id = id;
         this.first_name = first_name;
         this.last_name = last_name;
         this.description = description;
+        this.category = category;
         if(avatar_url) this.avatar_url = avatar_url;
 
         this.evaluations_average = 5.0;
