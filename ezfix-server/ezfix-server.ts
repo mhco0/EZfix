@@ -14,7 +14,7 @@ db.service_providers.push(new ServiceProvider(
     "Playboy",
     "Hi, as you already know my name is Flavio and I would love to help you! I have more than 5 years of experience in house cleaning. For me, nothing is more satisfiying then a good smelling bathroom. Fun fact, I am a architecture student and a use every money that I earn here to support my studies.",
     "House Cleaning",
-    "http://img.ibxk.com.br/2015/08/27/27151624778422.jpg?w=1040"
+    "https://randomuser.me/api/portraits/men/4.jpg"
 ));
 
 db.service_providers.push(new ServiceProvider(2, "Flávio", "Cap", "I'm Good", "House Cleaning", "https://randomuser.me/api/portraits/men/3.jpg"))
@@ -133,6 +133,27 @@ ezfixserver.post("/service/:provider_id", function (req: express.Request, res: e
     }
 
     res.send({ "failure": "Error in create service" });
+})
+
+ezfixserver.post("/updateservice/:service_id", function (req: express.Request, res: express.Response) {
+    const service = db.services.find(el => el.id == Number(req.params.service_id));
+
+    if (service) {
+        var payment_status = <Boolean>req.body['payment_status'];
+        var payment_online = <Boolean>req.body['payment_online'];
+
+        service.updatePaymentStatus(payment_status);
+        service.updatePaymentForm(payment_online);
+
+        res.status(200).send({
+            "success": "Successfull service update",
+        });
+
+        return;
+
+
+    }
+    res.status(400).send({ "failure": "Error updating service" });
 })
 
 ezfixserver.get("/listcontracts/:client_id", function (req: express.Request, res: express.Response) {
