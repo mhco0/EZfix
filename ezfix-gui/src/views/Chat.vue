@@ -1,8 +1,7 @@
 <template>
     <div class="ChatArea">
         <v-card class="ChatTopArea">
-            <Message text="Teste com uma mensagem maior pra ver se o texto vai pra baixo hsauhaushauhsauhsuahuhahsauhsuaushauhsuahushauhsuahsuahushaushauhsuahsuahsuhaushaushaushaushuhsaushaushaushauhsuahsuahsuhaushahsuhauhsauhsuhahsuahsuahsuaushaushauhsu"/>
-            <Message text="Teste"/>
+            <TimeMessage v-for="(messageText, index) in messageList" :key="index" :text="messageText"/>
         </v-card>
         <div class="ChatBottomArea">
             Bottom
@@ -11,16 +10,17 @@
 </template>
 
 <script>
-    import Message from "../components/Message";
+    import TimeMessage from "../components/TimeMessage";
 
     export default {
         name: "Chat",
         components: {
-            Message,
+            TimeMessage,
         },
         data: function() {
             return {
-                messageList: [],
+                messageList: ["Teste com uma mensagem maior pra ver se o texto vai pra baixo hsauhaushauhsauhsuahuhahsauhsuaushauhsuahushauhsuahsuahushaushauhsuahsuahsuhaushaushaushaushuhsaushaushaushauhsuahsuahsuhaushahsuhauhsauhsuhahsuahsuahsuaushaushauhsu",
+                 "Teste"],
             };
         },
         methods: {
@@ -44,7 +44,11 @@
     }
 
     .ChatBottomArea{
+        padding-top: 2vw;
+        padding-right: 5vw;
+        padding-left: 5vw;
         height: 20vh;
         overflow-y: inherit;
+        background-color: #FAFAFA; 
     }
 </style>
