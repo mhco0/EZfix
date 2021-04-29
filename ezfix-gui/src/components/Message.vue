@@ -1,6 +1,9 @@
 <template>
     <v-row>
-        <v-card class="rounded-xl">{{text}}</v-card>
+        <v-card elevation="4" class="rounded-xl">
+            {{text}}
+            <slot/>
+        </v-card>
     </v-row>
 </template>
 
@@ -13,7 +16,7 @@
                 default: ""
             },
         },
-        methods:{
+        methods: {
             setMessageText(newText){
                 this.text = newText
             }
