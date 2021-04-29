@@ -68,7 +68,9 @@ export default {
                 this.service_quality_rating, 
                 this.ezfix_rating,
                 this.coment
-            );
+            )
+            .then(() => alert("Succesfull evalluation"))
+            .catch(() => alert("Error in evalluation"));
 
             this.$emit("close_EvaluationForm");
         }
