@@ -26,11 +26,16 @@ ezfixserver.post("/evaluate/:service_id", function (req, res) {
         var evaluation = req.body;
         evaluation = service.evaluate(evaluation);
         if (evaluation) {
-            res.status(200).send({
-                "success": "Successfull evaluation",
-                "evaluation": evaluation
-            });
-            return;
+            const provider = database_1.db.service_providers.find(el => el.id == service.service_provider_id);
+            if (provider) {
+                const new_grade = (evaluation.attendance_rating + evaluation.punctuality_rating + evaluation.service_quality_rating) / 3;
+                provider.update_evaluation_average(new_grade);
+                res.status(200).send({
+                    "success": "Successfull evaluation",
+                    "evaluation": evaluation
+                });
+                return;
+            }
         }
     }
     res.status(400).send({ "failure": "Error in evaluation" });

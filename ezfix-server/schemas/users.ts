@@ -27,4 +27,12 @@ export class ServiceProvider {
         this.evaluations_average = 5.0;
         this.jobs_number = 0;
     }
+
+    update_evaluation_average(new_grade: number){
+        this.evaluations_average = (this.evaluations_average + new_grade)/2;
+    }
+
+    increase_jobs_number(){
+        this.jobs_number++;
+    }
 }

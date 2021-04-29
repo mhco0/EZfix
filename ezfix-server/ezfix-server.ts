@@ -42,12 +42,19 @@ ezfixserver.post("/evaluate/:service_id", function (req: express.Request, res: e
         evaluation = service.evaluate(evaluation);
     
         if(evaluation){
-            res.status(200).send({
-                "success": "Successfull evaluation",
-                "evaluation": evaluation
-            });
+            const provider = db.service_providers.find(el => el.id == service.service_provider_id);
 
-            return;
+            if(provider){
+                const new_grade = (evaluation.attendance_rating + evaluation.punctuality_rating + evaluation.service_quality_rating) / 3;
+                provider.update_evaluation_average(new_grade);
+
+                res.status(200).send({
+                    "success": "Successfull evaluation",
+                    "evaluation": evaluation
+                });
+    
+                return;
+            }
         }
     }
 
