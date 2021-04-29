@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="payment-title">Payment:</div>
-    <CreditCardForm />
+    <CreditCardForm @pay-with-card="credit_card_payment" />
     <div class="or-text">or</div>
     <div class="pay-in-person">
       <p>
@@ -9,7 +9,7 @@
         person to confirm the payment in the plataform
       </p>
       <center>
-        <v-btn type="submit" color="primary" tile @click="call_contracts_page"
+        <v-btn type="submit" color="primary" tile @click="pay_in_person"
           >Pay in person</v-btn
         >
       </center>
@@ -27,20 +27,34 @@ export default {
   },
   methods: {
     create_new_service: service_api.create_service,
-    call_contracts_page() {
+    credit_card_payment(newCard) {
+      this.call_contracts_page(true, true);
+      console.log(newCard);
+    },
+    pay_in_person() {
       if (confirm("You want to pay in person. Are you sure?")) {
-        this.create_new_service(
-          1,
-          Number(this.$route.params.provider_id),
-          true,
-          true
-        ).then((res) => {
-          if (res.data.success) {
-            this.$router.push({ name: "Contracts" });
-          } else {
-            alert("Service Provider doesn't exist!");
-          }
-        });
+        this.call_contracts_page(false, false);
+      }
+    },
+    create_service(paymentStatus, paymentOnline) {
+      this.create_new_service(
+        1,
+        Number(this.$route.params.provider_id),
+        paymentStatus,
+        paymentOnline
+      ).then((res) => {
+        if (res.data.success) {
+          this.$router.push({ name: "Contracts" });
+        } else {
+          alert("Service Provider doesn't exist!");
+        }
+      });
+    },
+    call_contracts_page(paymentStatus, paymentOnline) {
+      if (!this.$route.params.service_id) {
+        this.create_service(paymentStatus, paymentOnline);
+      } else {
+        console.log("update service", paymentStatus, paymentOnline);
       }
     },
   },
