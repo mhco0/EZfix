@@ -2,16 +2,27 @@
   <form @submit="onSubmit" class="card-form">
     <div class="form-control">
       <label>Cardholder Name:</label>
-      <input type="text" v-model="cardHolder" name="cardholder" />
+      <input
+        id="input-card-name"
+        type="text"
+        v-model="cardHolder"
+        name="cardholder"
+      />
     </div>
     <div class="form-control">
       <label>Card Number:</label>
-      <input type="text" v-model="cardNumber" name="number" />
+      <input
+        id="input-card-number"
+        type="text"
+        v-model="cardNumber"
+        name="number"
+      />
     </div>
     <div class="form-control-expiration">
       <label>Expiration Date:</label>
       <span class="expiration">
         <input
+          id="input-card-expiration-month"
           type="text"
           name="month"
           v-model="expirationM"
@@ -21,6 +32,7 @@
         />
         /
         <input
+          id="input-card-expiration-year"
           type="text"
           name="year"
           v-model="expirationY"
@@ -32,6 +44,7 @@
       <div class="form-control-expiration">
         <label class="cvv">CVV:</label>
         <input
+          id="input-card-cvv"
           class="expiration"
           type="text"
           v-model="cvv"
@@ -43,9 +56,16 @@
     </div>
 
     <div class="form-control form-control-check">
-      <input type="checkbox" v-model="saveCard" name="save" />
+      <input
+        id="input-save-card"
+        type="checkbox"
+        v-model="saveCard"
+        name="save"
+      />
       <label>save card</label>
-      <v-btn type="submit" color="primary" tile>Confirm now</v-btn>
+      <v-btn id="confirm-payment-now" type="submit" color="primary" tile
+        >Confirm now</v-btn
+      >
     </div>
   </form>
 </template>
