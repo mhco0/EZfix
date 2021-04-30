@@ -110,6 +110,8 @@ ezfixserver.get("/provider/:provider_id", function (req: express.Request, res: e
             "success": "Successfull provider getting",
             "provider": provider
         });
+
+        return;
     }
 
     res.status(400).send({ "failure": "Provider getting error" });
