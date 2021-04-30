@@ -57,6 +57,9 @@ defineSupportCode(function ({ Given, When, Then }) {
     })
 
     Then(/^I can not see the button Add a review of the service provider "Flavio"$/, async () => {
+        await browser.get("http://localhost:8080/#/contracts");
+        await expect(browser.getTitle()).to.eventually.equal('ezfix-gui');
+
         const add_review_buttons = await element.all(by.id('addreview-button'));
 
         await expect(add_review_buttons.length).to.equal(0);
