@@ -1,5 +1,6 @@
 <template>
     <v-text-field
+    id="chat-input-text-id"
     class="rounded-xl"
     append-icon="fas fa-envelope"
     v-model="text"
@@ -26,7 +27,6 @@
             sendMessage(){
                 if (this.text !== ""){
                     this.$emit("send-message", this.text)
-                    console.log(this.text)
                     this.text = ""
                 }
             }
