@@ -58,7 +58,7 @@ ezfixserver.post("/evaluate/:service_id", function (req: express.Request, res: e
                 provider.update_evaluation_average(new_grade);
 
                 res.status(200).send({
-                    "success": "Successfull evaluation",
+                    "success": "Successful evaluation",
                     "evaluation": evaluation
                 });
 
@@ -92,7 +92,7 @@ ezfixserver.get("/listcoments/:provider_id", function (req: express.Request, res
             })
 
             res.status(200).send({
-                "success": "Successfull evaluation listing",
+                "success": "Successful evaluation listing",
                 "coments": provider_coments
             });
 
@@ -107,7 +107,7 @@ ezfixserver.get("/provider/:provider_id", function (req: express.Request, res: e
 
     if (provider) {
         res.status(200).send({
-            "success": "Successfull provider getting",
+            "success": "Successful provider getting",
             "provider": provider
         });
 
@@ -134,10 +134,7 @@ ezfixserver.post("/service/:provider_id", function (req: express.Request, res: e
             service.payment_online
         ));
 
-        res.send({
-            "success": "Successfull service create",
-            "service": service
-        });
+        res.send({ "success": "Successful service create" });
 
         return;
 
@@ -156,15 +153,13 @@ ezfixserver.post("/updateservice/:service_id", function (req: express.Request, r
         service.updatePaymentStatus(payment_status);
         service.updatePaymentForm(payment_online);
 
-        res.status(200).send({
-            "success": "Successfull service update",
-        });
+        res.send({ "success": "Successful service update" });
 
         return;
 
 
     }
-    res.status(400).send({ "failure": "Error updating service" });
+    res.send({ "failure": "Error updating service" });
 })
 
 ezfixserver.get("/listcontracts/:client_id", function (req: express.Request, res: express.Response) {
@@ -199,11 +194,7 @@ ezfixserver.get("/listcontracts/:client_id", function (req: express.Request, res
                     "has_evaluation": service.evaluation != undefined
                 })
             })
-
-            res.send({
-                "success": "Successfull contracts listing",
-                "contracts": contracts
-            });
+            res.send(JSON.stringify(contracts));
 
             return;
         }
@@ -232,7 +223,7 @@ ezfixserver.post("/payment/:client_id", function (req: express.Request, res: exp
             }
 
             res.status(200).send({
-                "success": "Successfull payment",
+                "success": "Successful payment",
             });
 
             return;
@@ -248,11 +239,7 @@ ezfixserver.get("/cardslist/:client_id", function (req: express.Request, res: ex
         var cards = client.cards;
 
         if (cards) {
-
-            res.send({
-                "success": "Successfull getting card list",
-                "cards": cards
-            });
+            res.send(JSON.stringify(cards));
 
             return;
         }
