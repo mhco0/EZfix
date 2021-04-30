@@ -25,6 +25,11 @@ const routes = [
     component: Payment,
   },
   {
+    path: "/payment/:provider_id/:service_id",
+    name: "PayService",
+    component: Payment,
+  },
+  {
     path: "/contracts",
     name: "Contracts",
     component: Contracts,

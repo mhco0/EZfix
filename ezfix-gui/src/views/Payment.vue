@@ -1,7 +1,10 @@
 <template>
   <div>
     <div class="payment-title">Payment:</div>
-    <CreditCardForm />
+    <CreditCardForm
+      @pay-with-card="credit_card_payment"
+      :savedCards="savedCards"
+    />
     <div class="or-text">or</div>
     <div class="pay-in-person">
       <p>
@@ -9,7 +12,7 @@
         person to confirm the payment in the plataform
       </p>
       <center>
-        <v-btn type="submit" color="primary" tile @click="call_contracts_page"
+        <v-btn type="submit" color="primary" tile @click="pay_in_person"
           >Pay in person</v-btn
         >
       </center>
@@ -20,29 +23,82 @@
 <script>
 import CreditCardForm from "../components/CreditCardForm";
 import service_api from "../api/services";
+import payment_api from "../api/payment";
 export default {
   name: "Payment",
   components: {
     CreditCardForm,
   },
+  data() {
+    return {
+      client_id: 1,
+      savedCards: [],
+    };
+  },
   methods: {
     create_new_service: service_api.create_service,
-    call_contracts_page() {
+    update_a_service: service_api.update_service,
+    auth_card: payment_api.auth_card,
+    get_cards_list: payment_api.get_cards_list,
+    credit_card_payment(newCard) {
+      this.auth_card(newCard, this.client_id).then((res) => {
+        if (res.data.success) {
+          alert("Successful payment!");
+          this.call_contracts_page(true, true);
+        } else {
+          alert(
+            "Your payment failure, please review your credit card information!"
+          );
+        }
+      });
+    },
+    pay_in_person() {
       if (confirm("You want to pay in person. Are you sure?")) {
-        this.create_new_service(
-          1,
-          Number(this.$route.params.provider_id),
-          true,
-          true
-        ).then((res) => {
+        this.call_contracts_page(false, false);
+      }
+    },
+    create_service(payment_status, payment_online) {
+      this.create_new_service(
+        1,
+        Number(this.$route.params.provider_id),
+        payment_status,
+        payment_online
+      ).then((res) => {
+        if (res.data.success) {
+          this.$router.push({ name: "Contracts" });
+        } else {
+          alert("The link you access is invalid!");
+        }
+      });
+    },
+    update_service(service_id, payment_status, payment_online) {
+      this.update_a_service(service_id, payment_status, payment_online).then(
+        (res) => {
           if (res.data.success) {
             this.$router.push({ name: "Contracts" });
           } else {
-            alert("Service Provider doesn't exist!");
+            alert("update Service error!");
           }
-        });
+        }
+      );
+    },
+    call_contracts_page(payment_status, payment_online) {
+      var service_id = this.$route.params.service_id;
+      if (!service_id) {
+        this.create_service(payment_status, payment_online);
+      } else {
+        this.update_service(service_id, payment_status, payment_online);
       }
     },
+  },
+  mounted() {
+    this.get_cards_list(this.client_id).then((response) => {
+      if (response.data.success) {
+        response.data.cards.forEach((card) => {
+          this.savedCards.unshift(card);
+        });
+      }
+    });
   },
 };
 </script>
