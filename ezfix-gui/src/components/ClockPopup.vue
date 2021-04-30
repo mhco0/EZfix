@@ -74,7 +74,7 @@
                                 right_time = new Date ('1/1/1999 ' + this.time) > new Date ('1/1/1999 ' + this.otherTime);
                             }
 
-                            if(right_time){
+                            if(right_time !== null && right_time === true){
                                 return true;
                             }else{
                                 return "Coloque os tempos na ordem de menor e maior";
