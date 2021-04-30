@@ -214,18 +214,46 @@ function checkCardMatch(card1: Card, card2: Card): Boolean {
         && card1.expiryMonth == card2.expiryMonth
         && card1.expiryYear == card2.expiryYear);
 }
-ezfixserver.post("/payment/", function (req: express.Request, res: express.Response) {
-    var card: Card = <Card>req.body["card"];
-    console.log(card);
-    if (card) {
+ezfixserver.post("/payment/:client_id", function (req: express.Request, res: express.Response) {
+    const client = db.clients.find(el => el.id == Number(req.params.client_id));
+
+    if (client) {
+        var card: Card = <Card>req.body["card"];
         var match = db.cards.find(el => checkCardMatch(el, card));
+
         if (match) {
+
+            if (req.body["saveCard"]) {
+                client.saveCard(card);
+            }
+
             res.status(200).send({
                 "success": "Successfull payment",
             });
+
+            return;
         }
     }
     res.send({ "failure": "Payment error" });
+})
+
+ezfixserver.get("/cardslist/:client_id", function (req: express.Request, res: express.Response) {
+    const client = db.clients.find(el => el.id == Number(req.params.client_id));
+
+    if (client) {
+        var cards = client.cards;
+
+        if (cards) {
+
+            res.send({
+                "success": "Successfull getting card list",
+                "cards": cards
+            });
+
+            return;
+        }
+    }
+    res.send({ "failure": "Get cards list error" });
 })
 
 var server = ezfixserver.listen(3000, function () {
