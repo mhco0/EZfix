@@ -3,6 +3,9 @@
     <img src="../assets/electrician.png" alt="" />
     <MainHomeText />
     <GetStarted />
+    <ServiceButtonHouse />
+    <ServiceButtonEletric />
+    <ServiceButtonPlumbing />
   </div>
 </template>
 
@@ -10,11 +13,17 @@
 // @ is an alias to /src
 import MainHomeText from "@/components/MainHomeText.vue";
 import GetStarted from "@/components/GetStarted.vue";
+import ServiceButtonHouse from "@/components/ServiceButtonHouse.vue";
+import ServiceButtonEletric from "@/components/ServiceButtonEletric.vue";
+import ServiceButtonPlumbing from "@/components/ServiceButtonPlumbing.vue";
 export default {
   name: "Home",
   components: {
     MainHomeText,
     GetStarted,
+    ServiceButtonHouse,
+    ServiceButtonEletric,
+    ServiceButtonPlumbing,
   },
 };
 </script>

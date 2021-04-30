@@ -5,6 +5,7 @@ import ToContract from "../views/ToContract.vue";
 import Payment from "../views/Payment.vue";
 import Contracts from "../views/ContractsBoard.vue";
 import Chat from "../views/Chat.vue";
+import Search from "../views/Search.vue"
 
 Vue.use(VueRouter);
 
@@ -38,6 +39,11 @@ const routes = [
     path: "/chat/:provider_id/:client_id",
     name: "Chat",
     component: Chat,
+  },
+  {
+    path: "/search",
+    name: "Search",
+    component: Search,
   }
 ];
 
