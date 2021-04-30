@@ -16,12 +16,13 @@ export default {
   data() {
     return {
       contracts: [],
+      client_id: 1,
     };
   },
   methods: {
     get_contracts_list: service_api.get_contracts_list,
     update_contracts(){
-      this.get_contracts_list(1).then((response) => {
+      this.get_contracts_list(this.client_id).then((response) => {
         console.log(response.data);
         this.contracts = []
         response.data.contracts.forEach((contract) => {

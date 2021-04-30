@@ -5,6 +5,7 @@
       <span>capable</span> people
     </h1>
     <h1 id="secondText">Find someone who can help you in many categories</h1>
+    <h1 id="thirdText">And more...</h1>
   </div>
 </template>
 
@@ -35,6 +36,21 @@
   font-weight: normal;
   font-size: 96px;
   line-height: 112px;
+}
+#thirdText {
+  position: absolute;
+  width: 520px;
+  height: 143px;
+  left: 640px;
+  top: 2035px;
+
+  font-family: Roboto Condensed;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 96px;
+  line-height: 112px;
+
+  color: #000000;
 }
 span {
   color: #2178b7;

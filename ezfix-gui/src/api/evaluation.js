@@ -11,10 +11,11 @@ export default {
       "coment": coment
     }
     
+
     return session.post("/evaluate/"+service_id.toString(), body);
   },
 
   async get_reviews_list(provider_id) {
-    return session.get("/listcoments/"+provider_id.toString());
+    return session.get("/listcoments/" + provider_id.toString());
   }
 };

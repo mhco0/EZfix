@@ -1,21 +1,47 @@
 <template>
   <form @submit="onSubmit" class="card-form">
     <div class="form-control">
-      <label>Card Number:</label>
-      <input type="text" v-model="cardNumber" name="number" />
-    </div>
-    <div class="form-control">
-      <label>Expiration Date:</label>
-      <input type="text" v-model="expirationDate" name="expiration" />
-    </div>
-    <div class="form-control">
-      <label>CVV:</label>
-      <input type="text" v-model="cvv" name="cvv" />
-    </div>
-    <div class="form-control">
       <label>Cardholder Name:</label>
       <input type="text" v-model="cardHolder" name="cardholder" />
     </div>
+    <div class="form-control">
+      <label>Card Number:</label>
+      <input type="text" v-model="cardNumber" name="number" />
+    </div>
+    <div class="form-control-expiration">
+      <label>Expiration Date:</label>
+      <span class="expiration">
+        <input
+          type="text"
+          name="month"
+          v-model="expirationM"
+          placeholder="MM"
+          maxlength="2"
+          size="2"
+        />
+        /
+        <input
+          type="text"
+          name="year"
+          v-model="expirationY"
+          placeholder="YYYY"
+          maxlength="4"
+          size="4"
+        />
+      </span>
+      <div class="form-control-expiration">
+        <label class="cvv">CVV:</label>
+        <input
+          class="expiration"
+          type="text"
+          v-model="cvv"
+          name="cvv"
+          maxlength="3"
+          size="3"
+        />
+      </div>
+    </div>
+
     <div class="form-control form-control-check">
       <input type="checkbox" v-model="saveCard" name="save" />
       <label>save card</label>
@@ -27,10 +53,14 @@
 <script>
 export default {
   name: "AddTask",
+  props: {
+    savedCards: Array,
+  },
   data() {
     return {
       cardNumber: "",
-      expirationDate: "",
+      expirationM: "",
+      expirationY: "",
       cvv: "",
       cardHolder: "",
       saveCard: false,
@@ -39,12 +69,23 @@ export default {
   methods: {
     onSubmit(e) {
       e.preventDefault();
+
+      if (!this.cardHolder) {
+        alert("Please enter the cardholder name");
+        return;
+      }
+
       if (!this.cardNumber) {
         alert("Please enter the card number");
         return;
       }
 
-      if (!this.expirationDate) {
+      if (!this.expirationM) {
+        alert("Please enter te expiration date");
+        return;
+      }
+
+      if (!this.expirationY) {
         alert("Please enter te expiration date");
         return;
       }
@@ -54,22 +95,19 @@ export default {
         return;
       }
 
-      if (!this.cardHolder) {
-        alert("Please enter the cardholder name");
-        return;
-      }
-
       const newCard = {
         cardNumber: this.cardNumber,
-        expirationDate: this.expirationDate,
+        expirationM: Number(this.expirationM),
+        expirationY: Number(this.expirationY),
         cvv: this.cvv,
         cardHolder: this.cardHolder,
         saveCard: this.saveCard,
       };
-      console.log("Save card:", this.saveCard);
       this.$emit("pay-with-card", newCard);
+      //Rafactor this code to a new method clearForm
       this.cardNumber = "";
-      this.expirationDate = "";
+      this.expirationM = "";
+      this.expirationY = "";
       this.cvv = "";
       this.cardHolder = "";
       this.saveCard = false;
@@ -105,6 +143,22 @@ export default {
 .form-control input {
   width: 400px;
   height: 30px;
+  font-size: 17px;
+  padding-left: 7px;
+  background: white;
+  border: 1px solid #000000;
+  box-sizing: border-box;
+}
+
+.expiration {
+  margin-left: 10px;
+}
+.form-control-expiration {
+  margin: 20px 0;
+  color: #000000;
+}
+
+.form-control-expiration input {
   font-size: 17px;
   padding-left: 7px;
   background: white;

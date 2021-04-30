@@ -47,7 +47,13 @@
               <v-btn color="primary black--text" rounded small>See chat</v-btn>
             </div>
             <div style="margin-top: 10px">
-              <v-btn color="primary black--text" rounded small>Pay now</v-btn>
+              <v-btn
+                color="primary black--text"
+                rounded
+                small
+                @click="call_payment_page"
+                >Pay now</v-btn
+              >
             </div>
           </div>
         </v-row>
@@ -78,6 +84,11 @@ export default {
       if(!this.showEvaluation){
         this.$emit("update-contracts");
       }
+    },
+    call_payment_page() {
+      this.$router.push({
+        path: `/payment/${this.contract.provider_id}/${this.contract.id}`,
+      });
     },
   },
 };

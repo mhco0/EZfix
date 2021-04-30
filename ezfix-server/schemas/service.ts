@@ -25,4 +25,12 @@ export class Service {
 
         return this.evaluation
     }
+
+    updatePaymentStatus(payment_status: Boolean) {
+        this.payment_status = payment_status;
+    }
+
+    updatePaymentForm(payment_online: Boolean) {
+        this.payment_online = payment_online;
+    }
 }
