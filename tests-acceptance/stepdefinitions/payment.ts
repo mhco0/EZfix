@@ -5,6 +5,7 @@ let expect = chai.expect;
 import request = require("request-promise");
 
 var base_url = "http://localhost:3000/";
+var client_id = "1";
 
 defineSupportCode(function ({ Given, When, Then }) {
     Given(/^I am on the "Payment" page$/, async () => {
@@ -81,4 +82,43 @@ defineSupportCode(function ({ Given, When, Then }) {
 
         await expect(paymentsPending.length).to.equal(0);
     })
+
+    Given(/^the system has two services registered with id "1" and id "2"$/, async () => {
+        await request.get(base_url + "listcontracts/" + client_id)
+            .then(body => {
+                expect(body.includes(`"id":1`)).to.equal(true);
+                expect(body.includes(`"id":2`)).to.equal(true);
+            });
+    })
+
+    Given(/^the system has no service with id "3"$/, async () => {
+        await request.get(base_url + "listcontracts/" + client_id)
+            .then(body =>
+                expect(body.includes(`"id":3`)).to.equal(false)
+            );
+    })
+
+    When(/^I register a new service with the service provider id "2", payment status and online "true"$/, async () => {
+        var service = {
+            "json": {
+                "client_id": client_id,
+                "service_provider_id": 2,
+                "payment_status": true,
+                "payment_online": true
+            }
+        }
+
+        await request.post(base_url + "service/" + "2", service)
+            .then(body =>
+                expect(body.success).to.equal("Successful service create")
+            );
+    })
+
+    Then(/^the system has a service with id "3"$/, async () => {
+        await request.get(base_url + "listcontracts/" + client_id)
+            .then(body =>
+                expect(body.includes(`"id":3`)).to.equal(true)
+            );
+    });
+
 })

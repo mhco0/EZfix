@@ -39,3 +39,9 @@ Feature: as a customer
         When I confirm the payment
         Then I go to the "Contracts Board" page
         Then I can't see the "Payment Status" is pending
+
+    Scenario: Creating a new service
+        Given the system has two services registered with id "1" and id "2"
+        Given the system has no service with id "3"
+        When I register a new service with the service provider id "2", payment status and online "true"
+        Then the system has a service with id "3"
