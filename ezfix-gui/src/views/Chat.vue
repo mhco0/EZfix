@@ -3,19 +3,21 @@
         <v-card class="ChatTopArea">
             <TimeMessage v-for="(messageText, index) in messageList" :key="index" :text="messageText"/>
         </v-card>
-        <div class="ChatBottomArea">
-            Bottom
-        </div>
+        <v-card class="ChatBottomArea">
+            <InputTextChat/>
+        </v-card>
     </div>
 </template>
 
 <script>
     import TimeMessage from "../components/TimeMessage";
+    import InputTextChat from "../components/InputTextChat";
 
     export default {
         name: "Chat",
         components: {
             TimeMessage,
+            InputTextChat
         },
         data: function() {
             return {
