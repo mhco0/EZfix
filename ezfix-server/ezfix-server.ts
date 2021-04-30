@@ -14,7 +14,7 @@ db.service_providers.push(new ServiceProvider(
     "Playboy", 
     "Hi, as you already know my name is Flavio and I would love to help you! I have more than 5 years of experience in house cleaning. For me, nothing is more satisfiying then a good smelling bathroom. Fun fact, I am a architecture student and a use every money that I earn here to support my studies.",
   "House Cleaning",  
-  "http://img.ibxk.com.br/2015/08/27/27151624778422.jpg?w=1040"
+  "https://www.cin.ufpe.br/~srg/wp-content/uploads/2012/04/mota.jpg"
 ));
 
 db.service_providers.push(new ServiceProvider(2, "Flávio", "Cap", "I'm Good","House Cleaning", "https://randomuser.me/api/portraits/men/3.jpg"))

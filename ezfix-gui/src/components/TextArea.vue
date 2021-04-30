@@ -15,6 +15,7 @@
                     background-color="white"
                     v-model="text"
                     @input="$emit('text', text)"
+                    id="coment-area"
                 ></v-textarea>
             </v-col>
         </v-row>

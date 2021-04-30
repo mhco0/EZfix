@@ -15,7 +15,7 @@ When I register the evaluation with Attendance "5", Punctuality "5", Service Qua
 When I click on the Save button
 Then The evaluation dialog of Flavio closes
 
-Scenario: Evaluating a service provider already evaluated
+Scenario: Trying to evaluating a service provider already evaluated
 Given I am at the Contracts Board page
 Given I can see a concluded service of the service provider "Flavio"
 Then I can not see the button Add a review of the service provider "Flavio"

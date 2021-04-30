@@ -8,7 +8,7 @@ const users_1 = require("./schemas/users");
 const service_1 = require("./schemas/service");
 //Adicionando o cliente
 database_1.db.clients.push(new users_1.Client(1, "Sérgio"));
-database_1.db.service_providers.push(new users_1.ServiceProvider(1, "Flávio", "Playboy", "Hi, as you already know my name is Flavio and I would love to help you! I have more than 5 years of experience in house cleaning. For me, nothing is more satisfiying then a good smelling bathroom. Fun fact, I am a architecture student and a use every money that I earn here to support my studies.", "House Cleaning", "http://img.ibxk.com.br/2015/08/27/27151624778422.jpg?w=1040"));
+database_1.db.service_providers.push(new users_1.ServiceProvider(1, "Flávio", "Playboy", "Hi, as you already know my name is Flavio and I would love to help you! I have more than 5 years of experience in house cleaning. For me, nothing is more satisfiying then a good smelling bathroom. Fun fact, I am a architecture student and a use every money that I earn here to support my studies.", "House Cleaning", "https://www.cin.ufpe.br/~srg/wp-content/uploads/2012/04/mota.jpg"));
 database_1.db.service_providers.push(new users_1.ServiceProvider(2, "Flávio", "Cap", "I'm Good", "House Cleaning", "https://randomuser.me/api/portraits/men/3.jpg"));
 database_1.db.service_providers.push(new users_1.ServiceProvider(3, "Barnabé", "Cap", "I'm better", "House Cleaning", "https://randomuser.me/api/portraits/men/29.jpg"));
 database_1.db.service_providers.push(new users_1.ServiceProvider(4, "Joana", "Cap", "I'm way better", "House Cleaning", "https://randomuser.me/api/portraits/women/2.jpg"));
