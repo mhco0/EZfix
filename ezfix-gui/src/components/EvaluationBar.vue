@@ -6,6 +6,7 @@
                     {{label}}:
                     <v-spacer></v-spacer>
                     <v-rating
+                        id="evaluation-bar"
                         v-model="rating"
                         background-color="yellow"
                         color="yellow"

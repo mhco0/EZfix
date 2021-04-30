@@ -13,7 +13,7 @@
           :src="contract.provider_avatar_url"
           :alt="contract.provider_name"
         />
-        <div>
+        <div id="provider-name">
           {{ contract.provider_name }}
         </div>
       </v-col>
@@ -37,6 +37,8 @@
               rounded
               small
               @click="toggleEvaluation"
+              v-if="!contract.has_evaluation"
+              id="addreview-button"
               >Add a review</v-btn
             >
           </div>
@@ -78,6 +80,10 @@ export default {
   methods: {
     toggleEvaluation() {
       this.showEvaluation = !this.showEvaluation;
+
+      if(!this.showEvaluation){
+        this.$emit("update-contracts");
+      }
     },
     call_payment_page() {
       this.$router.push({
