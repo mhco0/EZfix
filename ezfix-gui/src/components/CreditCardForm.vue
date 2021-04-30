@@ -53,6 +53,9 @@
 <script>
 export default {
   name: "AddTask",
+  props: {
+    savedCards: Array,
+  },
   data() {
     return {
       cardNumber: "",

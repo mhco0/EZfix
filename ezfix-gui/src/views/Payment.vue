@@ -1,7 +1,10 @@
 <template>
   <div>
     <div class="payment-title">Payment:</div>
-    <CreditCardForm @pay-with-card="credit_card_payment" />
+    <CreditCardForm
+      @pay-with-card="credit_card_payment"
+      :savedCards="savedCards"
+    />
     <div class="or-text">or</div>
     <div class="pay-in-person">
       <p>
@@ -26,12 +29,19 @@ export default {
   components: {
     CreditCardForm,
   },
+  data() {
+    return {
+      client_id: 1,
+      savedCards: [],
+    };
+  },
   methods: {
     create_new_service: service_api.create_service,
     update_a_service: service_api.update_service,
     auth_card: payment_api.auth_card,
+    get_cards_list: payment_api.get_cards_list,
     credit_card_payment(newCard) {
-      this.auth_card(newCard).then((res) => {
+      this.auth_card(newCard, this.client_id).then((res) => {
         if (res.data.success) {
           alert("Successful payment!");
           this.call_contracts_page(true, true);
@@ -80,6 +90,15 @@ export default {
         this.update_service(service_id, payment_status, payment_online);
       }
     },
+  },
+  mounted() {
+    this.get_cards_list(this.client_id).then((response) => {
+      if (response.data.success) {
+        response.data.cards.forEach((card) => {
+          this.savedCards.unshift(card);
+        });
+      }
+    });
   },
 };
 </script>

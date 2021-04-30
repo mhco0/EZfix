@@ -16,13 +16,14 @@ export default {
   data() {
     return {
       contracts: [],
+      client_id: 1,
     };
   },
   methods: {
     get_contracts_list: service_api.get_contracts_list,
   },
   mounted() {
-    this.get_contracts_list(1).then((response) => {
+    this.get_contracts_list(this.client_id).then((response) => {
       response.data.contracts.forEach((contract) => {
         this.contracts.unshift(contract);
       });

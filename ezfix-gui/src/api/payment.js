@@ -11,7 +11,7 @@ function makeid(length) {
 }
 
 export default {
-    async auth_card(card) {
+    async auth_card(card, client_id) {
         var merchantRefNum = makeid(Math.floor(Math.random() * 10) + 25);
 
         const body = {
@@ -27,6 +27,10 @@ export default {
             saveCard: card.saveCard
         }
 
-        return session.post("/payment/", body);
+        return session.post("/payment/" + client_id.toString(), body);
     },
+
+    async get_cards_list(client_id) {
+        return session.get("/cardslist/" + client_id.toString());
+    }
 };
