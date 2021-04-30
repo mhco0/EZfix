@@ -100,8 +100,12 @@
                             return (item.begin !== "" && item.end !== "");
                         });
 
-                        self.$emit("appointments-times", validItems);
-                        self.cancelSchedules();
+                        if (validItems.length >= 1){
+                            self.$emit("appointments-times", validItems);
+                            self.cancelSchedules();
+                        }else{
+                            alert("Selecione pelo menos um hórario.");
+                        }
                     }
                 });
             },

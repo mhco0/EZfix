@@ -1,5 +1,5 @@
 <template> 
-    <Message :text="text"><input type="text"/></Message>
+    <Message text="Tenho os seguintes hórarios disponiveis. Qual deles fica melhor pra voçê ?"><input type="text"/></Message>
 </template>
 
 <script>
