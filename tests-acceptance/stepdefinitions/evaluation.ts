@@ -56,15 +56,6 @@ defineSupportCode(function ({ Given, When, Then }) {
         await expect(dialog.length).to.equal(0);
     })
 
-    Then(/^I can not see the button Add a review of the service provider "Flavio"$/, async () => {
-        await browser.get("http://localhost:8080/#/contracts");
-        await expect(browser.getTitle()).to.eventually.equal('ezfix-gui');
-
-        const add_review_buttons = await element.all(by.id('addreview-button'));
-
-        await expect(add_review_buttons.length).to.equal(0);
-    })
-
     Given(/^I am at the To contract page of the service provider "Flavio"$/, async () => {
         await browser.get("http://localhost:8080/#/tocontract/1");
         await expect(browser.getTitle()).to.eventually.equal('ezfix-gui');
@@ -73,4 +64,25 @@ defineSupportCode(function ({ Given, When, Then }) {
         const reviews = await element.all(by.id('reviewtext'))
         await expect(reviews[0].getText()).to.eventually.equal('Sérgio: Really good service!');
     });
+
+    When(/^I try to evaluate the same service with Attendance "5", Punctuality "5", Service Quality "5", comment "Nice service!" and Evaluate EZfiz "5"$/, async () => {
+        const body:any = {
+            "evaluator_id": 1,
+            "attendance_rating": 5,
+            "punctuality_rating": 5,
+            "service_quality_rating": 5,
+            "ezfix_rating": 5,
+            "coment": "Nice service!"
+        }
+
+        await request.post(base_url + "evaluate/1", body).catch(response => {
+            expect(response.error).to.equal('{"failure":"Error in evaluation"}');
+        })
+    })
+
+    Then(/^The system doesn't store the evaluation$/, async () => {
+        await request.get(base_url + "listcoments/1").then(response => {
+            expect(JSON.parse(response).coments[0].coment).not.equal("Nice service!")
+        })
+    })
 })
