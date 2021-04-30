@@ -25,9 +25,8 @@ export default {
     get_contracts_list: service_api.get_contracts_list,
     update_contracts() {
       this.get_contracts_list(this.client_id).then((response) => {
-        console.log(response.data);
         this.contracts = [];
-        response.data.contracts.forEach((contract) => {
+        response.data.forEach((contract) => {
           this.contracts.unshift(contract);
         });
       });

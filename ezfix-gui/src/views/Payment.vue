@@ -98,8 +98,8 @@ export default {
   },
   mounted() {
     this.get_cards_list(this.client_id).then((response) => {
-      if (response.data.success) {
-        response.data.cards.forEach((card) => {
+      if (!response.data.failure) {
+        response.data.forEach((card) => {
           this.savedCards.unshift(card);
         });
       }
