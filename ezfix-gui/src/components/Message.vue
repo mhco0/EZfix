@@ -18,7 +18,7 @@
         },
         methods: {
             setMessageText(newText){
-                this.text = newText
+                this.text = newText;
             }
         }
     }

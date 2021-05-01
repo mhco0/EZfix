@@ -2,19 +2,19 @@
     <div class="ChatArea">
         <v-card class="ChatTopArea">
             <div class="mb-3" v-for="(messageObj, index) in messageList" :key="index">
-                <TimeMessage v-if="messageObj.type == 'time_message'" :text="messageObj.content"/>
+                <TimeMessage v-if="messageObj.type == 'time_message'" :appointments="messageObj.appointments"/>
                 <Message v-else :text="messageObj.content"/>
             </div>
         </v-card>
         <v-card class="ChatBottomArea">
             <v-row>
-                <RecordedMessage text="Bom dia!" />
-                <RecordedMessage class="mx-4" text="Tudo bem com você ?" />
-                <RecordedMessage text="Tudo Bem !" />
+                <RecordedMessage @send-message="sendMessageToServer" text="Bom dia!" />
+                <RecordedMessage @send-message="sendMessageToServer" class="mx-4" text="Oi, tudo bem com você ?" />
+                <RecordedMessage @send-message="sendMessageToServer" text="Tudo Bem !" />
             </v-row>
             <v-row>
-                <InputTextChat class="mr-4"/>
-                <AppointmentClock />
+                <InputTextChat @send-message="sendMessageToServer" class="mr-4"/>
+                <AppointmentClock @appointments-times="sendTimeMessageToServer" />
             </v-row>
         </v-card>
     </div>
@@ -38,31 +38,23 @@
         },
         data: function() {
             return {
-                messageList: [
-                    {
-                        type: "time_message",
-                        content: "esse texto n vai ser usado"
-                    },
-                    {
-                        type: "message",
-                        content: "esse texto vai ser usado"
-                    },
-                    {
-                        type: "message",
-                        content: "esse texto vai ser usado 2"
-                    },
-                    {
-                        type: "message",
-                        content: "esse texto vai ser usado 3"
-                    },
-                    {
-                        type: "message",
-                        content: "esse texto vai ser usado 4"
-                    }
-                    ],
+                messageList: [],
             };
         },
         methods: {
+            sendMessageToServer(content_text){
+                this.messageList.push({type: "message", content: content_text, appointments: []});
+            },
+
+            sendTimeMessageToServer(appointments_array){
+                let new_appointments_arr = [];
+                // Vue can't let you assing the direct array
+                appointments_array.forEach(element => {
+                    new_appointments_arr.push({begin: element.begin, end:element.end});
+                });
+
+                this.messageList.push({type: "time_message", content: '', appointments: new_appointments_arr});
+            }
         },
     };
 </script>
@@ -79,7 +71,7 @@
         padding-left: 5vw;
         height: 70vh;
         width: 100vw;
-        overflow-y: scroll;
+        overflow-y: auto;
         background-color: #FAFAFA; 
     }
 
