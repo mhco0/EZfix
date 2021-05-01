@@ -16,7 +16,7 @@
         methods:{
             sendMessage(){
                 if (this.text !== ""){
-                    this.$emit("send-message", this.text)
+                    this.$emit("send-message", this.text);
                 }
             }
         }

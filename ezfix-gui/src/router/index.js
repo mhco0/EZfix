@@ -30,7 +30,7 @@ const routes = [
     component: Contracts,
   },
   {
-    path: "/chat/:provider_id/:client_id",
+    path: "/chat/:service_id",
     name: "Chat",
     component: Chat,
   }
