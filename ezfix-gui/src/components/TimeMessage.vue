@@ -1,12 +1,15 @@
 <template> 
     <Message text="Tenho os seguintes hórarios disponiveis. Qual deles fica melhor pra voçê ?">
-        <div class="mb-3 mt-3" v-for="(appointmentInterval, index) in appointments" :key="index">
-            <label>
-                <input class="mr-4" type="radio" :v-model="appointmentInterval">
-                <span>{{appointmentInterval.begin}} - {{appointmentInterval.end}}</span>
-                <br>
-            </label>
-        </div>
+        <v-radio-group  class="mb-3 mt-3" v-model="radioGroup">
+            <v-radio
+            dark
+            :ripple="false"
+            v-for="(appointmentInterval, index) in appointments"
+            :key="index"
+            :label="appointmentInterval.begin + '-' + appointmentInterval.end"
+            :value="appointmentInterval"
+            ></v-radio>
+        </v-radio-group>
     </Message>
 </template>
 
