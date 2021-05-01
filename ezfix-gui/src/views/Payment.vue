@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="payment-title">Payment:</div>
+    <div id="payment-view-title" class="payment-title">Payment</div>
     <CreditCardForm
       id="credit-card-form"
       @pay-with-card="credit_card_payment"

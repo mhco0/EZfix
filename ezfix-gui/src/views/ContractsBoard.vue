@@ -1,7 +1,7 @@
 <template>
   <div>
     <div id="contracts-board-title" class="contracts-title">
-      Contracts board view:
+      Contracts board view
     </div>
     <Contracts :contracts="contracts" @update-contracts="update_contracts" />
   </div>
