@@ -5,6 +5,7 @@ import { Evaluation } from "./schemas/evaluation";
 import { db } from "./database"
 import { Client, ServiceProvider } from './schemas/users';
 import { Service } from './schemas/service';
+import { Message } from './schemas/chat';
 
 //Adicionando o cliente
 db.clients.push(new Client(1, "Sérgio"))
@@ -173,6 +174,50 @@ ezfixserver.get("/listcontracts/:client_id", function (req: express.Request, res
         }
     }
     res.send({ "failure": "Contracts listing error" });
+})
+
+ezfixserver.post("/chat/:service_id", function (req: express.Request, res: express.Response) {
+    const service = db.services.find(el => el.id == Number(req.params.service_id));
+
+    if(service){
+        let objInfo = JSON.parse(req.body);
+        
+        if(objInfo.type === "time_message"){
+            service.getChat().addTimeMessage(objInfo.sender, objInfo.appointments);
+        }else{
+            service.getChat().addMessage(objInfo.sender, objInfo.content);
+        }
+
+        res.send({
+            "success" : "message added on chat service"
+        });
+    }
+
+    res.send({
+        "failure" : "message not added on chat service"
+    });
+})
+
+ezfixserver.get("/chat/:service_id", function (req: express.Request, res: express.Response) {
+    const service = db.services.find(el => el.id == Number(req.params.service_id));
+
+    if(service){
+        let messages: Array<Message> = service.getChat().getMessages();
+
+        let responseArray: Array<any> = [];
+
+        messages.forEach(element => {
+            let convertedMessage = element.toJson();
+
+            responseArray.push(convertedMessage);
+        });
+
+        res.send(JSON.stringify(responseArray));
+    }
+
+    res.send({
+        "failure" : "service not found"
+    });
 })
 
 var server = ezfixserver.listen(3000, function () {
