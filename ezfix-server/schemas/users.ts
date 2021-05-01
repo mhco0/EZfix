@@ -1,13 +1,5 @@
 import { Card } from "./card";
 
-function checkCardMatch(card1: Card, card2: Card): Boolean {
-    return (card1.cardName == card2.cardName
-        && card1.cardNum == card2.cardNum
-        && card1.cvv == card2.cvv
-        && card1.expiryMonth == card2.expiryMonth
-        && card1.expiryYear == card2.expiryYear);
-}
-
 export class Client {
     id: number;
     first_name: string;
@@ -19,8 +11,16 @@ export class Client {
         this.cards = [];
     }
 
+    checkCardMatch(card1: Card, card2: Card): Boolean {
+        return (card1.cardName == card2.cardName
+            && card1.cardNum == card2.cardNum
+            && card1.cvv == card2.cvv
+            && card1.expiryMonth == card2.expiryMonth
+            && card1.expiryYear == card2.expiryYear);
+    }
+
     saveCard(card: Card): Card {
-        if (this.cards.find(el => checkCardMatch(el, card))) return null;
+        if (this.cards.find(el => this.checkCardMatch(el, card))) return null;
 
         this.cards.unshift(card);
 
