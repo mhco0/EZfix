@@ -12,7 +12,7 @@ export default {
     }
     
 
-    return session.post("/evaluate/"+service_id.toString(), body);
+    return session.post("/evaluate/" + service_id.toString(), body);
   },
 
   async get_reviews_list(provider_id) {

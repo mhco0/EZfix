@@ -37,7 +37,12 @@ const routes = [
   },
   {
     path: "/chat/:service_id",
-    name: "Chat",
+    name: "ChatClient",
+    component: Chat,
+  },
+  {
+    path: "/chat/:service_id/:provider_id",
+    name: "ChatProvider",
     component: Chat,
   },
   {

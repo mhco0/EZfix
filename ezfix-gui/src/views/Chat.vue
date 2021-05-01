@@ -29,6 +29,9 @@
 
     export default {
         name: "Chat",
+        mounted: function() {
+            console.log('test creation');
+        },
         components: {
             TimeMessage,
             InputTextChat,
@@ -49,6 +52,7 @@
             sendTimeMessageToServer(appointments_array){
                 let new_appointments_arr = [];
                 // Vue can't let you assing the direct array
+                // Eu posso refatorar aqui usando o JSON.strigifly and JSON.parse para fazer a deep copy dos objetos
                 appointments_array.forEach(element => {
                     new_appointments_arr.push({begin: element.begin, end:element.end});
                 });
