@@ -12,16 +12,16 @@ defineSupportCode(function ({ Given, When, Then }) {
         await expect(browser.getTitle()).to.eventually.equal('ezfix-gui');
     })
 
-    Given(/^I can see a concluded service of the service provider "Flavio"$/, async () => {
+    Given(/^I can see a concluded service of the service provider with id "1"$/, async () => {
         const providers_names = await element.all(by.id('provider-name'));
         await expect(providers_names[0].getText()).to.eventually.equal('Flávio Playboy');
     })
 
-    Given(/^I can see the button Add a review of the service provider "Flavio"$/, async () => {
+    Given(/^I can see the button Add a review of the service provider with id "1"$/, async () => {
         await element(by.id('addreview-button'));
     })
 
-    When(/^I click on the button Add a review of the service provider "Flavio"$/, async () => {
+    When(/^I click on the button Add a review of the service provider with id "1"$/, async () => {
         await element(by.id('addreview-button')).click();
     })
 
@@ -29,7 +29,7 @@ defineSupportCode(function ({ Given, When, Then }) {
         await element(by.id('evaluationform-dialog'));
     })
 
-    Given(/^I am at the evaluation dialog of the service provider "Flavio"$/, async () => {
+    Given(/^I am at the evaluation dialog of the service provider with id "1"$/, async () => {
         await element(by.id('evaluationform-dialog'));
     })
 
@@ -50,13 +50,13 @@ defineSupportCode(function ({ Given, When, Then }) {
         await alert.dismiss();
     })
 
-    Then(/^The evaluation dialog of Flavio closes$/, async () => {
+    Then(/^The evaluation dialog of the service provider with id "1" closes$/, async () => {
         const dialog = await element.all(by.id('evaluationform-dialog'));
 
         await expect(dialog.length).to.equal(0);
     })
 
-    Given(/^I am at the To contract page of the service provider "Flavio"$/, async () => {
+    Given(/^I am at the To contract page of the service provider with id "1"$/, async () => {
         await browser.get("http://localhost:8080/#/tocontract/1");
         await expect(browser.getTitle()).to.eventually.equal('ezfix-gui');
     })
