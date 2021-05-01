@@ -8,8 +8,8 @@ var base_url = "http://localhost:3000/";
 var client_id = "1";
 
 defineSupportCode(function ({ Given, When, Then }) {
-    Given(/^I am on the "([^\"]*)" page$/, async (title) => {
-        await browser.get("http://localhost:8080/#/payment/1");
+    Given(/^I am on the "([^\"]*)" page with provider id "(\d*)"$/, async (title, provider_id) => {
+        await browser.get(`http://localhost:8080/#/payment/${provider_id}`);
         await expect(element(by.id('payment-view-title')).getText()).to.eventually.equal(title.toString());
     })
 
