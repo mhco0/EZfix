@@ -17,7 +17,7 @@ defineSupportCode(function ({ Given, When, Then }) {
         await element(by.id('credit-card-form'));
     })
 
-    When(/^I enter my cardholder name "([^\"]*)" card number "(\d*)" expiration month "(\d*)" expiration year "(\d*)" cvv "(\d*)"$/,
+    When(/^I enter my credit card informations, with cardholder name "([^\"]*)" card number "(\d*)" expiration month "(\d*)" expiration year "(\d*)" cvv "(\d*)"$/,
         async (cardName, cardNum, expM, expY, cvv) => {
             await element(by.id('input-card-name')).sendKeys(cardName.toString());
             await element(by.id('input-card-number')).sendKeys(cardNum.toString());
@@ -49,24 +49,10 @@ defineSupportCode(function ({ Given, When, Then }) {
         await alert.accept();
     })
 
-    When(/^I enter the CVV "(\d*)" wrong$/, async (cvv) => {
-        var cvvInput = await element(by.id('input-card-cvv'));
-        await cvvInput.clear().then(async function () {
-            await cvvInput.sendKeys(cvv.toString());
-        })
-    })
-
     Then(/^a error message is shown$/, async () => {
         var alert = await browser.switchTo().alert();
         await expect(alert.getText()).to.eventually.equal('Your payment failure, please review your credit card information!');
         await alert.dismiss();
-    })
-
-    When(/^I enter the card number "(\d*)" wrong$/, async (cardNum) => {
-        var cardNumberInput = await element(by.id('input-card-number'));
-        await cardNumberInput.clear().then(async function () {
-            await cardNumberInput.sendKeys(cardNum.toString());
-        })
     })
 
     Given(/^I am at the "([^\"]*)" page$/, async (title) => {
