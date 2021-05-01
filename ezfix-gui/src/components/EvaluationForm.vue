@@ -2,15 +2,17 @@
     <v-dialog value="true" max-width="1000" id="evaluationform-dialog">
         <v-card>
             <v-card-title class="text-h4">
-                Add a review to {{service_provider_name}}...
+                <div id="dialog-provider-name">
+                    Add a review to {{service_provider_name}}...
+                </div>
             </v-card-title>
 
             <v-card-text>
                 <v-row align="center">
                     <v-col sm="8" cols="12">
-                        <EvaluationBar label="Attendance" @rating="attendance_rating=$event" />
-                        <EvaluationBar label="Punctuality" @rating="punctuality_rating=$event" />
-                        <EvaluationBar label="Service Quality" @rating="service_quality_rating=$event" />
+                        <EvaluationBar id="attendance" label="Attendance" @rating="attendance_rating=$event" />
+                        <EvaluationBar id="punctuality" label="Punctuality" @rating="punctuality_rating=$event" />
+                        <EvaluationBar id="service-quality" label="Service Quality" @rating="service_quality_rating=$event" />
                     </v-col>
                     <v-col sm="4" cols="12">
                         <v-avatar size="200">
@@ -28,7 +30,7 @@
             </v-card-text>
 
             <v-card-actions>
-                <EvaluationBar class="mx-2" label="Evaluate EZfix" @rating="ezfix_rating=$event" justify="start" />
+                <EvaluationBar id="ezfix-evaluation" class="mx-2" label="Evaluate EZfix" @rating="ezfix_rating=$event" justify="start" />
                 <v-spacer></v-spacer>
                 <v-btn id="savecoment-button" color="primary black--text" rounded @click="save_evaluation">Save</v-btn>
             </v-card-actions>

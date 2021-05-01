@@ -1,3 +1,4 @@
+import { response } from "express";
 import request = require("request-promise");
 
 var base_url = "http://localhost:3000/";
@@ -131,6 +132,72 @@ describe("The server", () => {
             )
     });
 
+    it("doesn't evaluate a service that doesn't exist", () => {
+        const body:any = {
+            "evaluator_id": 1,
+            "attendance_rating": 5,
+            "punctuality_rating": 5,
+            "service_quality_rating": 5,
+            "ezfix_rating": 5,
+            "coment": "Really good service!"
+        }
 
+        return request.post(base_url + "evaluate/2", body)
+            .catch((response: any) => {
+                expect(response.error).toEqual('{"failure":"Error in evaluation"}')
+            })
+    })
 
+    it("evaluate a service that exists", () => {
+        var body = {
+            json: {
+                "evaluator_id": 1,
+                "attendance_rating": 5,
+                "punctuality_rating": 5,
+                "service_quality_rating": 5,
+                "ezfix_rating": 5,
+                "coment": "Really good service!"
+            }
+        }
+
+        return request.post(base_url + "evaluate/1", body)
+            .then((response: any) => {
+                expect(response).toEqual({
+                    "success":"Successful evaluation",
+                    "evaluation":{
+                        evaluator_id: 1,
+                        attendance_rating: 5,
+                        punctuality_rating: 5,
+                        service_quality_rating: 5,
+                        ezfix_rating: 5,
+                        coment: 'Really good service!'
+                    }
+                })
+            })
+    })
+
+    it("doesn't evaluate a service that is already evaluated", () => {
+        var body = {
+            json: {
+                "evaluator_id": 1,
+                "attendance_rating": 5,
+                "punctuality_rating": 5,
+                "service_quality_rating": 5,
+                "ezfix_rating": 5,
+                "coment": "Really good service!"
+            }
+        }
+
+        return request.post(base_url + "evaluate/1", body)
+            .catch((response: any) => {
+                expect(response.error).toEqual({"failure":"Error in evaluation"})
+            })
+    })
+
+    it("list the coments", () => {
+        return request.get(base_url + "listcoments/1")
+            .then((response: any) => {
+                expect(response).toEqual('{"success":"Successful evaluation listing","coments":[{"client_name":"Sérgio","coment":"Really good service!"}]}');
+            })
+    })
 })

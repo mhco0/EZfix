@@ -1,5 +1,5 @@
 <template>
-  <v-container class="contract-border">
+  <v-container class="contract-border" id="contract-border">
     <Evaluation
       v-if="showEvaluation"
       :service_id="contract.id"
