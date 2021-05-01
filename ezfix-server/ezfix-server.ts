@@ -8,27 +8,26 @@ import { Service } from './schemas/service';
 import { Card } from "./schemas/card";
 
 //Adicionando o cliente
-db.clients.push(new Client(1, "Sérgio"))
-db.service_providers.push(new ServiceProvider(
-    1,
-    "Flávio",
-    "Playboy",
-    "Hi, as you already know my name is Flavio and I would love to help you! I have more than 5 years of experience in house cleaning. For me, nothing is more satisfiying then a good smelling bathroom. Fun fact, I am a architecture student and a use every money that I earn here to support my studies.",
-    "House Cleaning",
-    "https://randomuser.me/api/portraits/men/4.jpg"
+db.create("clients", new Client(1, "Sérgio"));
+db.create("service_providers", new ServiceProvider(
+        1,
+        "Flávio",
+        "Playboy",
+        "Hi, as you already know my name is Flavio and I would love to help you! I have more than 5 years of experience in house cleaning. For me, nothing is more satisfiying then a good smelling bathroom. Fun fact, I am a architecture student and a use every money that I earn here to support my studies.",
+        "House Cleaning",
+        "https://randomuser.me/api/portraits/men/4.jpg"
 ));
+db.create("service_providers", new ServiceProvider(2, "Flávio", "Cap", "I'm Good", "House Cleaning", "https://randomuser.me/api/portraits/men/3.jpg"));
+db.create("service_providers", new ServiceProvider(3, "Barnabé", "Cap", "I'm better", "House Cleaning", "https://randomuser.me/api/portraits/men/29.jpg"));
+db.create("service_providers", new ServiceProvider(4, "Joana", "Cap", "I'm way better", "House Cleaning", "https://randomuser.me/api/portraits/women/2.jpg"));
 
-db.service_providers.push(new ServiceProvider(2, "Flávio", "Cap", "I'm Good", "House Cleaning", "https://randomuser.me/api/portraits/men/3.jpg"))
-db.service_providers.push(new ServiceProvider(3, "Barnabé", "Cap", "I'm better", "House Cleaning", "https://randomuser.me/api/portraits/men/29.jpg"))
-db.service_providers.push(new ServiceProvider(4, "Joana", "Cap", "I'm way better", "House Cleaning", "https://randomuser.me/api/portraits/women/2.jpg"))
-
-db.cards.push(new Card("Sergio Soares", "1111222233334444", "101", 11, 2025))
-db.cards.push(new Card("Sergio Soares", "2222333344445555", "202", 11, 2025))
-db.cards.push(new Card("Sergio Soares", "1234123412341234", "303", 11, 2025))
-db.cards.push(new Card("Thalisson Tavares", "3333444455556666", "404", 11, 2025))
-db.cards.push(new Card("Gabriel Marques", "4444555566667777", "505", 11, 2025))
-db.cards.push(new Card("Luis Pereira", "5555666677778888", "606", 11, 2025))
-db.cards.push(new Card("Marcos Heitor", "6666777788889999", "707", 11, 2025))
+db.create("cards", new Card("Sergio Soares", "1111222233334444", "101", 11, 2025));
+db.create("cards", new Card("Sergio Soares", "2222333344445555", "202", 11, 2025));
+db.create("cards", new Card("Sergio Soares", "1234123412341234", "303", 11, 2025));
+db.create("cards", new Card("Thalisson Tavares", "3333444455556666", "404", 11, 2025));
+db.create("cards", new Card("Gabriel Marques", "4444555566667777", "505", 11, 2025));
+db.create("cards", new Card("Luis Pereira", "5555666677778888", "606", 11, 2025));
+db.create("cards", new Card("Marcos Heitor", "6666777788889999", "707", 11, 2025));
 
 var ezfixserver = express();
 
@@ -43,7 +42,7 @@ ezfixserver.use(allowCrossDomain);
 ezfixserver.use(bodyParser.json());
 
 ezfixserver.post("/evaluate/:service_id", function (req: express.Request, res: express.Response) {
-    const service = db.services.find(el => el.id == Number(req.params.service_id));
+    const service = db.select("services", "id", Number(req.params.service_id));
 
     if (service) {
         var evaluation: Evaluation = <Evaluation>req.body;
@@ -51,7 +50,7 @@ ezfixserver.post("/evaluate/:service_id", function (req: express.Request, res: e
         evaluation = service.evaluate(evaluation);
 
         if (evaluation) {
-            const provider = db.service_providers.find(el => el.id == service.service_provider_id);
+            const provider = db.select("service_providers", "id", service.service_provider_id)
 
             if (provider) {
                 const new_grade = (evaluation.attendance_rating + evaluation.punctuality_rating + evaluation.service_quality_rating) / 3;
@@ -70,10 +69,10 @@ ezfixserver.post("/evaluate/:service_id", function (req: express.Request, res: e
 })
 
 ezfixserver.get("/listcoments/:provider_id", function (req: express.Request, res: express.Response) {
-    const provider = db.service_providers.find(el => el.id == Number(req.params.provider_id));
+    const provider = db.select("service_providers", "id", Number(req.params.provider_id));
 
     if (provider) {
-        const provider_services = db.services.filter(el => el.service_provider_id == Number(req.params.provider_id));
+        const provider_services = db.select("services", "service_provider_id", Number(req.params.provider_id), "multiple");
 
         if (provider_services) {
             class Coment {
@@ -82,10 +81,10 @@ ezfixserver.get("/listcoments/:provider_id", function (req: express.Request, res
             }
             var provider_coments: Array<Coment> = []
 
-            provider_services.forEach(service => {
+            provider_services.forEach((service: { evaluation: { evaluator_id: any; coment: any; }; }) => {
                 if (service.evaluation) {
                     provider_coments.push({
-                        "client_name": db.clients.find(el => el.id == service.evaluation.evaluator_id).first_name,
+                        "client_name": db.select("clients", "id", service.evaluation.evaluator_id).first_name,
                         "coment": service.evaluation.coment
                     })
                 }
@@ -103,7 +102,7 @@ ezfixserver.get("/listcoments/:provider_id", function (req: express.Request, res
 })
 
 ezfixserver.get("/provider/:provider_id", function (req: express.Request, res: express.Response) {
-    const provider = db.service_providers.find(el => el.id == Number(req.params.provider_id));
+    const provider = db.select("service_providers", "id", Number(req.params.provider_id));
 
     if (provider) {
         res.status(200).send({
@@ -119,14 +118,14 @@ ezfixserver.get("/provider/:provider_id", function (req: express.Request, res: e
 })
 
 ezfixserver.post("/service/:provider_id", function (req: express.Request, res: express.Response) {
-    const provider = db.service_providers.find(el => el.id == Number(req.params.provider_id));
-    const service_id = db.services.length + 1;
+    const provider = db.select("service_providers", "id", Number(req.params.provider_id));
+    const service_id = db.get_size("services") + 1;
 
     if (provider) {
         var service: Service = <Service>req.body;
         service.id = service_id;
-
-        db.services.push(new Service(
+        
+        db.create("services", new Service(
             service_id,
             service.client_id,
             service.service_provider_id,
@@ -144,7 +143,7 @@ ezfixserver.post("/service/:provider_id", function (req: express.Request, res: e
 })
 
 ezfixserver.post("/updateservice/:service_id", function (req: express.Request, res: express.Response) {
-    const service = db.services.find(el => el.id == Number(req.params.service_id));
+    const service = db.select("services", "id", Number(req.params.service_id));
 
     if (service) {
         var payment_status = <Boolean>req.body['payment_status'];
@@ -156,17 +155,15 @@ ezfixserver.post("/updateservice/:service_id", function (req: express.Request, r
         res.send({ "success": "Successful service update" });
 
         return;
-
-
     }
     res.send({ "failure": "Error updating service" });
 })
 
 ezfixserver.get("/listcontracts/:client_id", function (req: express.Request, res: express.Response) {
-    const client = db.clients.find(el => el.id == Number(req.params.client_id));
+    const client = db.select("clients", "id", Number(req.params.client_id));
 
     if (client) {
-        const client_services = db.services.filter(el => el.client_id == Number(req.params.client_id));
+        const client_services = db.select("services", "client_id", Number(req.params.client_id), "multiple");
 
         if (client_services) {
             class Contract {
@@ -180,9 +177,10 @@ ezfixserver.get("/listcontracts/:client_id", function (req: express.Request, res
                 has_evaluation: Boolean;
             }
             var contracts: Array<Contract> = []
+            
+            client_services.forEach((service: { service_provider_id: any; id: any; payment_status: any; payment_online: any; evaluation: any; }) => {
+                var provider = db.select("service_providers", "id", service.service_provider_id);
 
-            client_services.forEach(service => {
-                var provider = db.service_providers.find(el => el.id == service.service_provider_id);
                 contracts.push({
                     "id": service.id,
                     "provider_id": provider.id,
@@ -210,11 +208,13 @@ function checkCardMatch(card1: Card, card2: Card): Boolean {
         && card1.expiryYear == card2.expiryYear);
 }
 ezfixserver.post("/payment/:client_id", function (req: express.Request, res: express.Response) {
-    const client = db.clients.find(el => el.id == Number(req.params.client_id));
+    const client = db.select("clients", "id", Number(req.params.client_id));
 
     if (client) {
         var card: Card = <Card>req.body["card"];
-        var match = db.cards.find(el => checkCardMatch(el, card));
+        var db_card = db.select("cards", "cardNum", card.cardNum);
+
+        var match = checkCardMatch(card, db_card);
 
         if (match) {
 
@@ -233,7 +233,7 @@ ezfixserver.post("/payment/:client_id", function (req: express.Request, res: exp
 })
 
 ezfixserver.get("/cardslist/:client_id", function (req: express.Request, res: express.Response) {
-    const client = db.clients.find(el => el.id == Number(req.params.client_id));
+    const client = db.select("clients", "id", Number(req.params.client_id));
 
     if (client) {
         var cards = client.cards;
