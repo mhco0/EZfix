@@ -7,6 +7,7 @@ export class Message {
     private content: string;
 
     constructor(sender: SenderType, content: string){
+        this.sender = sender;
         this.content = content;
     }
 

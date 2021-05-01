@@ -1,10 +1,22 @@
 <template>
     <div class="ChatArea">
-        <v-card class="ChatTopArea">
-            <div class="mb-3" v-for="(messageObj, index) in messageList" :key="index">
-                <TimeMessage v-if="messageObj.type == 'time_message'" :appointments="messageObj.appointments"/>
-                <Message v-else :text="messageObj.content"/>
-            </div>
+        <v-card id="chat-top-area-id" class="ChatTopArea">
+            <v-row class="mb-6" v-for="(messageObj, index) in messageList" :key="index">
+                <v-col cols="12">
+                    <v-row class="ma-0" :justify="isProvider ? 'begin' : 'end' " v-if="messageObj.sender === 'client'">
+                        <div>
+                            <TimeMessage v-if="messageObj.type == 'time_message'" :appointments="messageObj.appointments"/>
+                            <Message v-else :text="messageObj.content"/>
+                        </div>
+                    </v-row>
+                    <v-row class="ma-0" :justify="isProvider ? 'end' : 'begin' " v-if="messageObj.sender === 'provider'">
+                        <div>
+                            <TimeMessage v-if="messageObj.type == 'time_message'" :appointments="messageObj.appointments"/>
+                            <Message v-else :text="messageObj.content"/>
+                        </div>
+                    </v-row>
+                </v-col>
+            </v-row>
         </v-card>
         <v-card class="ChatBottomArea">
             <v-row>
@@ -25,12 +37,19 @@
     import InputTextChat from "../components/InputTextChat";
     import AppointmentClock from "../components/AppointmentClock";
     import RecordedMessage from "../components/RecordedMessage";
-    import Message from '../components/Message.vue';
+    import Message from "../components/Message";
+    import ChatApi from "../api/chat";
 
     export default {
         name: "Chat",
         mounted: function() {
-            console.log('test creation');
+            this.isProvider = (this.$route.params.provider_id !== undefined)  ? true : false;
+            this.service_id = this.$route.params.service_id;
+            this.sender = this.isProvider ? "provider" : "client";
+
+            console.log(this.sender);
+
+            this.pollData()
         },
         components: {
             TimeMessage,
@@ -42,11 +61,23 @@
         data: function() {
             return {
                 messageList: [],
+                service_id: null,
+                sender: "",
+                isProvider: false
             };
         },
         methods: {
             sendMessageToServer(content_text){
-                this.messageList.push({type: "message", content: content_text, appointments: []});
+                let obj = {
+                    sender : this.sender,
+                    type: "message", 
+                    content: content_text, 
+                    appointments: []
+                };
+
+                ChatApi.sendMessage(this.service_id, JSON.stringify(obj)).then((res) => {
+                    console.log(res.data);
+                });
             },
 
             sendTimeMessageToServer(appointments_array){
@@ -57,8 +88,33 @@
                     new_appointments_arr.push({begin: element.begin, end:element.end});
                 });
 
-                this.messageList.push({type: "time_message", content: '', appointments: new_appointments_arr});
-            }
+                let obj = {
+                    sender : this.sender,
+                    type: "time_message", 
+                    content: '', 
+                    appointments: new_appointments_arr
+                };
+
+                ChatApi.sendMessage(this.service_id, JSON.stringify(obj)).then((res) => {
+                    console.log(res.data);
+                });
+            },
+
+            fetchMessagesFromServer(){
+                ChatApi.fetchMessageLists(this.service_id).then((res) => {
+                    if(!res.data.failure){
+                        this.messageList = JSON.parse(res.data.bytes);
+                    }
+                });
+            },
+
+            pollData(){
+                window.setInterval(() => {
+                    //let elem = document.getElementById('chat-top-area-id');
+                    //elem.scrollTop = elem.scrollHeight;
+                    this.fetchMessagesFromServer();
+                }, 300)
+            },
         },
     };
 </script>
@@ -88,5 +144,4 @@
         overflow-y: inherit;
         background-color: #FAFAFA; 
     }
-
 </style>

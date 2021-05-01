@@ -12,6 +12,7 @@ database_1.db.service_providers.push(new users_1.ServiceProvider(1, "Flávio", "
 database_1.db.service_providers.push(new users_1.ServiceProvider(2, "Flávio", "Cap", "I'm Good", "House Cleaning", "https://randomuser.me/api/portraits/men/3.jpg"));
 database_1.db.service_providers.push(new users_1.ServiceProvider(3, "Barnabé", "Cap", "I'm better", "House Cleaning", "https://randomuser.me/api/portraits/men/29.jpg"));
 database_1.db.service_providers.push(new users_1.ServiceProvider(4, "Joana", "Cap", "I'm way better", "House Cleaning", "https://randomuser.me/api/portraits/women/2.jpg"));
+database_1.db.services.push(new service_1.Service(1, 1, 1, true, true));
 var ezfixserver = express();
 var allowCrossDomain = function (req, res, next) {
     res.header('Access-Control-Allow-Origin', "*");
@@ -118,6 +119,46 @@ ezfixserver.get("/listcontracts/:client_id", function (req, res) {
         }
     }
     res.send({ "failure": "Contracts listing error" });
+});
+ezfixserver.post("/chat/:service_id", function (req, res) {
+    const service = database_1.db.services.find(el => el.id == Number(req.params.service_id));
+    if (service) {
+        console.log(req.body);
+        let objInfo = JSON.parse(req.body.bytes);
+        console.log("post ", objInfo);
+        if (objInfo.type === "time_message") {
+            service.getChat().addTimeMessage(objInfo.sender, objInfo.appointments);
+        }
+        else {
+            service.getChat().addMessage(objInfo.sender, objInfo.content);
+        }
+        res.send({
+            "success": "message added on chat service"
+        });
+        return;
+    }
+    res.send({
+        "failure": "message not added on chat service"
+    });
+    return;
+});
+ezfixserver.get("/chat/:service_id", function (req, res) {
+    const service = database_1.db.services.find(el => el.id == Number(req.params.service_id));
+    if (service) {
+        let messages = service.getChat().getMessages();
+        let responseArray = [];
+        messages.forEach(element => {
+            let convertedMessage = element.toJson();
+            responseArray.push(convertedMessage);
+        });
+        console.log("get ", responseArray);
+        res.send({ bytes: JSON.stringify(responseArray) });
+        return;
+    }
+    res.send({
+        "failure": "service not found"
+    });
+    return;
 });
 var server = ezfixserver.listen(3000, function () {
     console.log('EZfix app listening on port 3000!');

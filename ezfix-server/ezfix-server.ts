@@ -22,6 +22,8 @@ db.service_providers.push(new ServiceProvider(2, "Flávio", "Cap", "I'm Good","H
 db.service_providers.push(new ServiceProvider(3, "Barnabé", "Cap", "I'm better","House Cleaning", "https://randomuser.me/api/portraits/men/29.jpg"))
 db.service_providers.push(new ServiceProvider(4, "Joana", "Cap", "I'm way better","House Cleaning", "https://randomuser.me/api/portraits/women/2.jpg"))
 
+db.services.push(new Service(1, 1, 1, true, true));
+
 var ezfixserver = express();
 
 var allowCrossDomain = function (req: any, res: any, next: any) {
@@ -180,7 +182,9 @@ ezfixserver.post("/chat/:service_id", function (req: express.Request, res: expre
     const service = db.services.find(el => el.id == Number(req.params.service_id));
 
     if(service){
-        let objInfo = JSON.parse(req.body);
+        console.log(req.body);
+
+        let objInfo = JSON.parse(req.body.bytes);
         
         if(objInfo.type === "time_message"){
             service.getChat().addTimeMessage(objInfo.sender, objInfo.appointments);
@@ -191,11 +195,15 @@ ezfixserver.post("/chat/:service_id", function (req: express.Request, res: expre
         res.send({
             "success" : "message added on chat service"
         });
+
+        return;
     }
 
     res.send({
         "failure" : "message not added on chat service"
     });
+
+    return;
 })
 
 ezfixserver.get("/chat/:service_id", function (req: express.Request, res: express.Response) {
@@ -212,12 +220,16 @@ ezfixserver.get("/chat/:service_id", function (req: express.Request, res: expres
             responseArray.push(convertedMessage);
         });
 
-        res.send(JSON.stringify(responseArray));
+        res.send({bytes: JSON.stringify(responseArray)});
+
+        return;
     }
 
     res.send({
         "failure" : "service not found"
     });
+
+    return;
 })
 
 var server = ezfixserver.listen(3000, function () {
