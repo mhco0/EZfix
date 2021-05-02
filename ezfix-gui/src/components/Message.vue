@@ -1,6 +1,6 @@
 <template>
     <v-row>
-        <v-card elevation="4" class="rounded-xl">
+        <v-card name="message-name" elevation="4" class="rounded-xl">
             {{text}}
             <slot/>
         </v-card>

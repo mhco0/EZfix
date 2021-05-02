@@ -249,7 +249,8 @@ ezfixserver.post("/chat/:service_id", function (req: express.Request, res: expre
     const service = db.services.find(el => el.id == Number(req.params.service_id));
 
     if(service){
-        let objInfo = JSON.parse(req.body);
+
+        let objInfo = JSON.parse(req.body.bytes);
         
         if(objInfo.type === "time_message"){
             service.getChat().addTimeMessage(objInfo.sender, objInfo.appointments);
@@ -289,9 +290,9 @@ ezfixserver.get("/chat/:service_id", function (req: express.Request, res: expres
     });
 })
 
-var server = ezfixserver.listen(3000, function () {
+const server = ezfixserver.listen(3000, function () {
     console.log('EZfix app listening on port 3000!')
-})
+});
 
 function closeServer(): void {
     server.close();

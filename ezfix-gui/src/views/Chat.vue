@@ -1,10 +1,22 @@
 <template>
     <div class="ChatArea">
-        <v-card class="ChatTopArea">
-            <div class="mb-3" v-for="(messageObj, index) in messageList" :key="index">
-                <TimeMessage v-if="messageObj.type == 'time_message'" :appointments="messageObj.appointments"/>
-                <Message v-else :text="messageObj.content"/>
-            </div>
+        <v-card id="chat-top-area-id" class="ChatTopArea">
+            <v-row class="mb-6" v-for="(messageObj, index) in messageList" :key="index">
+                <v-col cols="12">
+                    <v-row class="ma-0" :justify="isProvider ? 'start' : 'end' " v-if="messageObj.sender === 'client'">
+                        <div name='div-message'>
+                            <TimeMessage v-if="messageObj.type == 'time_message'" :appointments="messageObj.appointments"/>
+                            <Message v-else :text="messageObj.content"/>
+                        </div>
+                    </v-row>
+                    <v-row class="ma-0" :justify="isProvider ? 'end' : 'start' " v-if="messageObj.sender === 'provider'">
+                        <div>
+                            <TimeMessage v-if="messageObj.type == 'time_message'" :appointments="messageObj.appointments"/>
+                            <Message v-else :text="messageObj.content"/>
+                        </div>
+                    </v-row>
+                </v-col>
+            </v-row>
         </v-card>
         <v-card class="ChatBottomArea">
             <v-row>
@@ -30,7 +42,11 @@
     export default {
         name: "Chat",
         mounted: function() {
-            console.log('test creation');
+            this.isProvider = (this.$route.params.provider_id !== undefined)  ? true : false;
+            this.service_id = this.$route.params.service_id;
+            this.sender = this.isProvider ? "provider" : "client";
+
+            this.pollData()
         },
         components: {
             TimeMessage,
@@ -46,7 +62,16 @@
         },
         methods: {
             sendMessageToServer(content_text){
-                this.messageList.push({type: "message", content: content_text, appointments: []});
+                let obj = {
+                    sender : this.sender,
+                    type: "message", 
+                    content: content_text, 
+                    appointments: []
+                };
+
+                ChatApi.sendMessage(this.service_id, JSON.stringify(obj)).then(() => {
+                    this.fetchMessagesFromServer();
+                });
             },
 
             sendTimeMessageToServer(appointments_array){
@@ -57,8 +82,33 @@
                     new_appointments_arr.push({begin: element.begin, end:element.end});
                 });
 
-                this.messageList.push({type: "time_message", content: '', appointments: new_appointments_arr});
-            }
+                let obj = {
+                    sender : this.sender,
+                    type: "time_message", 
+                    content: '', 
+                    appointments: new_appointments_arr
+                };
+
+                ChatApi.sendMessage(this.service_id, JSON.stringify(obj)).then(() => {
+                    this.fetchMessagesFromServer();
+                });
+            },
+
+            fetchMessagesFromServer(){
+                ChatApi.fetchMessageLists(this.service_id).then((res) => {
+                    if(!res.data.failure){
+                        this.messageList = JSON.parse(res.data.bytes);
+                    }
+                });
+            },
+
+            pollData(){
+                window.setInterval(() => {
+                    //let elem = document.getElementById('chat-top-area-id');
+                    //elem.scrollTop = elem.scrollHeight;
+                    this.fetchMessagesFromServer();
+                }, 300)
+            },
         },
     };
 </script>
