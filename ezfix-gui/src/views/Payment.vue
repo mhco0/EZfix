@@ -1,7 +1,8 @@
 <template>
   <div>
-    <div class="payment-title">Payment:</div>
+    <div id="payment-view-title" class="payment-title">Payment</div>
     <CreditCardForm
+      id="credit-card-form"
       @pay-with-card="credit_card_payment"
       :savedCards="savedCards"
     />
@@ -12,7 +13,12 @@
         person to confirm the payment in the plataform
       </p>
       <center>
-        <v-btn type="submit" color="primary" tile @click="pay_in_person"
+        <v-btn
+          id="pay-in-person-button"
+          type="submit"
+          color="primary"
+          tile
+          @click="pay_in_person"
           >Pay in person</v-btn
         >
       </center>
@@ -43,7 +49,6 @@ export default {
     credit_card_payment(newCard) {
       this.auth_card(newCard, this.client_id).then((res) => {
         if (res.data.success) {
-          alert("Successful payment!");
           this.call_contracts_page(true, true);
         } else {
           alert(
@@ -93,8 +98,8 @@ export default {
   },
   mounted() {
     this.get_cards_list(this.client_id).then((response) => {
-      if (response.data.success) {
-        response.data.cards.forEach((card) => {
+      if (!response.data.failure) {
+        response.data.forEach((card) => {
           this.savedCards.unshift(card);
         });
       }

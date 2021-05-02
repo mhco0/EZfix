@@ -58,7 +58,7 @@ ezfixserver.post("/evaluate/:service_id", function (req: express.Request, res: e
                 provider.update_evaluation_average(new_grade);
 
                 res.status(200).send({
-                    "success": "Successfull evaluation",
+                    "success": "Successful evaluation",
                     "evaluation": evaluation
                 });
 
@@ -92,7 +92,7 @@ ezfixserver.get("/listcoments/:provider_id", function (req: express.Request, res
             })
 
             res.status(200).send({
-                "success": "Successfull evaluation listing",
+                "success": "Successful evaluation listing",
                 "coments": provider_coments
             });
 
@@ -107,17 +107,23 @@ ezfixserver.get("/provider/:provider_id", function (req: express.Request, res: e
 
     if (provider) {
         res.status(200).send({
-            "success": "Successfull provider getting",
+            "success": "Successful provider getting",
             "provider": provider
         });
+
+        return;
     }
 
     res.status(400).send({ "failure": "Provider getting error" });
 
 })
 
+function findElementById(elements: Array<any>, id: number) {
+    return elements.find(el => el.id == id)
+}
+
 ezfixserver.post("/service/:provider_id", function (req: express.Request, res: express.Response) {
-    const provider = db.service_providers.find(el => el.id == Number(req.params.provider_id));
+    const provider = findElementById(db.service_providers, Number(req.params.provider_id));
     const service_id = db.services.length + 1;
 
     if (provider) {
@@ -132,10 +138,7 @@ ezfixserver.post("/service/:provider_id", function (req: express.Request, res: e
             service.payment_online
         ));
 
-        res.send({
-            "success": "Successfull service create",
-            "service": service
-        });
+        res.send({ "success": "Successful service create" });
 
         return;
 
@@ -145,7 +148,7 @@ ezfixserver.post("/service/:provider_id", function (req: express.Request, res: e
 })
 
 ezfixserver.post("/updateservice/:service_id", function (req: express.Request, res: express.Response) {
-    const service = db.services.find(el => el.id == Number(req.params.service_id));
+    const service = findElementById(db.services, Number(req.params.service_id));
 
     if (service) {
         var payment_status = <Boolean>req.body['payment_status'];
@@ -154,19 +157,17 @@ ezfixserver.post("/updateservice/:service_id", function (req: express.Request, r
         service.updatePaymentStatus(payment_status);
         service.updatePaymentForm(payment_online);
 
-        res.status(200).send({
-            "success": "Successfull service update",
-        });
+        res.send({ "success": "Successful service update" });
 
         return;
 
 
     }
-    res.status(400).send({ "failure": "Error updating service" });
+    res.send({ "failure": "Error updating service" });
 })
 
 ezfixserver.get("/listcontracts/:client_id", function (req: express.Request, res: express.Response) {
-    const client = db.clients.find(el => el.id == Number(req.params.client_id));
+    const client = findElementById(db.clients, Number(req.params.client_id));
 
     if (client) {
         const client_services = db.services.filter(el => el.client_id == Number(req.params.client_id));
@@ -180,11 +181,12 @@ ezfixserver.get("/listcontracts/:client_id", function (req: express.Request, res
                 provider_category: string;
                 paymentStatus: Boolean;
                 paymentOnline: Boolean;
+                has_evaluation: Boolean;
             }
             var contracts: Array<Contract> = []
 
             client_services.forEach(service => {
-                var provider = db.service_providers.find(el => el.id == service.service_provider_id);
+                var provider = findElementById(db.service_providers, service.service_provider_id);
                 contracts.push({
                     "id": service.id,
                     "provider_id": provider.id,
@@ -192,14 +194,11 @@ ezfixserver.get("/listcontracts/:client_id", function (req: express.Request, res
                     "provider_avatar_url": provider.avatar_url,
                     "provider_category": provider.category,
                     "paymentStatus": service.payment_status,
-                    "paymentOnline": service.payment_online
+                    "paymentOnline": service.payment_online,
+                    "has_evaluation": service.evaluation != undefined
                 })
             })
-
-            res.send({
-                "success": "Successfull contracts listing",
-                "contracts": contracts
-            });
+            res.send(JSON.stringify(contracts));
 
             return;
         }
@@ -207,19 +206,12 @@ ezfixserver.get("/listcontracts/:client_id", function (req: express.Request, res
     res.send({ "failure": "Contracts listing error" });
 })
 
-function checkCardMatch(card1: Card, card2: Card): Boolean {
-    return (card1.cardName == card2.cardName
-        && card1.cardNum == card2.cardNum
-        && card1.cvv == card2.cvv
-        && card1.expiryMonth == card2.expiryMonth
-        && card1.expiryYear == card2.expiryYear);
-}
 ezfixserver.post("/payment/:client_id", function (req: express.Request, res: express.Response) {
-    const client = db.clients.find(el => el.id == Number(req.params.client_id));
+    const client = findElementById(db.clients, Number(req.params.client_id));
 
     if (client) {
         var card: Card = <Card>req.body["card"];
-        var match = db.cards.find(el => checkCardMatch(el, card));
+        var match = db.cards.find(el => client.checkCardMatch(el, card));
 
         if (match) {
 
@@ -228,7 +220,7 @@ ezfixserver.post("/payment/:client_id", function (req: express.Request, res: exp
             }
 
             res.status(200).send({
-                "success": "Successfull payment",
+                "success": "Successful payment",
             });
 
             return;
@@ -238,17 +230,13 @@ ezfixserver.post("/payment/:client_id", function (req: express.Request, res: exp
 })
 
 ezfixserver.get("/cardslist/:client_id", function (req: express.Request, res: express.Response) {
-    const client = db.clients.find(el => el.id == Number(req.params.client_id));
+    const client = findElementById(db.clients, Number(req.params.client_id));
 
     if (client) {
         var cards = client.cards;
 
         if (cards) {
-
-            res.send({
-                "success": "Successfull getting card list",
-                "cards": cards
-            });
+            res.send(JSON.stringify(cards));
 
             return;
         }

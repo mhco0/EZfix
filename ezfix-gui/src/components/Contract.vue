@@ -13,7 +13,7 @@
           :src="contract.provider_avatar_url"
           :alt="contract.provider_name"
         />
-        <div>
+        <div id="provider-name">
           {{ contract.provider_name }}
         </div>
       </v-col>
@@ -21,8 +21,10 @@
         <div>Hired for: {{ contract.provider_category }}</div>
         <div v-if="contract.paymentOnline">Form of payment: Online</div>
         <div v-else>Form of payment: Personally</div>
-        <div v-if="contract.paymentStatus">Payment Status: Paid</div>
-        <div v-else>Payment Status: Pending</div>
+        <div id="payment-status-paid" v-if="contract.paymentStatus">
+          Payment Status: Paid
+        </div>
+        <div id="payment-status-pending" v-else>Payment Status: Pending</div>
       </v-col>
       <v-col cols="2" class="column3">
         <v-icon color="#2178b7" size="70" v-if="contract.paymentStatus"
@@ -37,6 +39,8 @@
               rounded
               small
               @click="toggleEvaluation"
+              v-if="!contract.has_evaluation"
+              id="addreview-button"
               >Add a review</v-btn
             >
           </div>
@@ -46,6 +50,7 @@
             </div>
             <div style="margin-top: 10px">
               <v-btn
+                id="pay-service-now"
                 color="primary black--text"
                 rounded
                 small
@@ -78,6 +83,10 @@ export default {
   methods: {
     toggleEvaluation() {
       this.showEvaluation = !this.showEvaluation;
+
+      if (!this.showEvaluation) {
+        this.$emit("update-contracts");
+      }
     },
     call_payment_page() {
       this.$router.push({

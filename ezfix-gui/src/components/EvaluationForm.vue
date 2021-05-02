@@ -1,5 +1,5 @@
 <template>
-    <v-dialog value="true" max-width="1000">
+    <v-dialog value="true" max-width="1000" id="evaluationform-dialog">
         <v-card>
             <v-card-title class="text-h4">
                 Add a review to {{service_provider_name}}...
@@ -30,7 +30,7 @@
             <v-card-actions>
                 <EvaluationBar class="mx-2" label="Evaluate EZfix" @rating="ezfix_rating=$event" justify="start" />
                 <v-spacer></v-spacer>
-                <v-btn color="primary black--text" rounded @click="save_evaluation">Save</v-btn>
+                <v-btn id="savecoment-button" color="primary black--text" rounded @click="save_evaluation">Save</v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
@@ -68,7 +68,9 @@ export default {
                 this.service_quality_rating, 
                 this.ezfix_rating,
                 this.coment
-            );
+            )
+            .then(() => alert("Succesfull evalluation"))
+            .catch(() => alert("Error in evalluation"));
 
             this.$emit("close_EvaluationForm");
         }

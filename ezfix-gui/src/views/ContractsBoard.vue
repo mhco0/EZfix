@@ -1,7 +1,9 @@
 <template>
   <div>
-    <div class="contracts-title">Contracts board view:</div>
-    <Contracts :contracts="contracts" />
+    <div id="contracts-board-title" class="contracts-title">
+      Contracts board view
+    </div>
+    <Contracts :contracts="contracts" @update-contracts="update_contracts" />
   </div>
 </template>
 
@@ -21,13 +23,17 @@ export default {
   },
   methods: {
     get_contracts_list: service_api.get_contracts_list,
+    update_contracts() {
+      this.get_contracts_list(this.client_id).then((response) => {
+        this.contracts = [];
+        response.data.forEach((contract) => {
+          this.contracts.unshift(contract);
+        });
+      });
+    },
   },
   mounted() {
-    this.get_contracts_list(this.client_id).then((response) => {
-      response.data.contracts.forEach((contract) => {
-        this.contracts.unshift(contract);
-      });
-    });
+    this.update_contracts();
   },
 };
 </script>
