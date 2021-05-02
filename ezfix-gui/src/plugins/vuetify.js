@@ -5,13 +5,15 @@ import "@fortawesome/fontawesome-free/css/all.css";
 import EzfixLogo from '@/assets/icons/EzfixLogo.vue'
 import HouseClean from '@/assets/icons/HouseClean.vue'
 import Plumbing from '@/assets/icons/Plumbing.vue'
+import Provider from '@/assets/icons/Provider.vue'
 
 Vue.use(Vuetify);
 
 const MY_ICONS = {
   ezfix_logo: { component: EzfixLogo },
   houseCleanIcon: { component: HouseClean },
-  plumbing: { component: Plumbing }
+  plumbing: { component: Plumbing },
+  provider: { component: Provider }
 }
 
 export default new Vuetify({
