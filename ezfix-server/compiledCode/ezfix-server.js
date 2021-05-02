@@ -123,9 +123,7 @@ ezfixserver.get("/listcontracts/:client_id", function (req, res) {
 ezfixserver.post("/chat/:service_id", function (req, res) {
     const service = database_1.db.services.find(el => el.id == Number(req.params.service_id));
     if (service) {
-        console.log(req.body);
         let objInfo = JSON.parse(req.body.bytes);
-        console.log("post ", objInfo);
         if (objInfo.type === "time_message") {
             service.getChat().addTimeMessage(objInfo.sender, objInfo.appointments);
         }
@@ -151,7 +149,6 @@ ezfixserver.get("/chat/:service_id", function (req, res) {
             let convertedMessage = element.toJson();
             responseArray.push(convertedMessage);
         });
-        console.log("get ", responseArray);
         res.send({ bytes: JSON.stringify(responseArray) });
         return;
     }
@@ -160,7 +157,7 @@ ezfixserver.get("/chat/:service_id", function (req, res) {
     });
     return;
 });
-var server = ezfixserver.listen(3000, function () {
+const server = ezfixserver.listen(3000, function () {
     console.log('EZfix app listening on port 3000!');
 });
 exports.server = server;

@@ -182,7 +182,6 @@ ezfixserver.post("/chat/:service_id", function (req: express.Request, res: expre
     const service = db.services.find(el => el.id == Number(req.params.service_id));
 
     if(service){
-        console.log(req.body);
 
         let objInfo = JSON.parse(req.body.bytes);
         
@@ -232,9 +231,9 @@ ezfixserver.get("/chat/:service_id", function (req: express.Request, res: expres
     return;
 })
 
-var server = ezfixserver.listen(3000, function () {
+const server = ezfixserver.listen(3000, function () {
     console.log('EZfix app listening on port 3000!')
-})
+});
 
 function closeServer(): void {
     server.close();

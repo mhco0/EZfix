@@ -3,13 +3,13 @@
         <v-card id="chat-top-area-id" class="ChatTopArea">
             <v-row class="mb-6" v-for="(messageObj, index) in messageList" :key="index">
                 <v-col cols="12">
-                    <v-row class="ma-0" :justify="isProvider ? 'begin' : 'end' " v-if="messageObj.sender === 'client'">
-                        <div>
+                    <v-row class="ma-0" :justify="isProvider ? 'start' : 'end' " v-if="messageObj.sender === 'client'">
+                        <div name='div-message'>
                             <TimeMessage v-if="messageObj.type == 'time_message'" :appointments="messageObj.appointments"/>
                             <Message v-else :text="messageObj.content"/>
                         </div>
                     </v-row>
-                    <v-row class="ma-0" :justify="isProvider ? 'end' : 'begin' " v-if="messageObj.sender === 'provider'">
+                    <v-row class="ma-0" :justify="isProvider ? 'end' : 'start' " v-if="messageObj.sender === 'provider'">
                         <div>
                             <TimeMessage v-if="messageObj.type == 'time_message'" :appointments="messageObj.appointments"/>
                             <Message v-else :text="messageObj.content"/>
@@ -47,8 +47,6 @@
             this.service_id = this.$route.params.service_id;
             this.sender = this.isProvider ? "provider" : "client";
 
-            console.log(this.sender);
-
             this.pollData()
         },
         components: {
@@ -75,8 +73,8 @@
                     appointments: []
                 };
 
-                ChatApi.sendMessage(this.service_id, JSON.stringify(obj)).then((res) => {
-                    console.log(res.data);
+                ChatApi.sendMessage(this.service_id, JSON.stringify(obj)).then(() => {
+                    this.fetchMessagesFromServer();
                 });
             },
 
@@ -95,8 +93,8 @@
                     appointments: new_appointments_arr
                 };
 
-                ChatApi.sendMessage(this.service_id, JSON.stringify(obj)).then((res) => {
-                    console.log(res.data);
+                ChatApi.sendMessage(this.service_id, JSON.stringify(obj)).then(() => {
+                    this.fetchMessagesFromServer();
                 });
             },
 

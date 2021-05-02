@@ -24,7 +24,8 @@
     "jasmine": "^3.7.0",
     "jasmine-promises": "^0.4.1",
     "request": "^2.88.2",
-    "request-promise": "^4.2.6"
+    "request-promise": "^4.2.6",
+    "socket.io": "^4.0.1"
   },
   "devDependencies": {
     "@types/express": "^4.17.11",
