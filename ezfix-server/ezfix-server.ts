@@ -123,7 +123,7 @@ function findElementById(elements: Array<any>, id: number) {
 }
 
 ezfixserver.post("/service/:provider_id", function (req: express.Request, res: express.Response) {
-    const provider = findElementById(db.service_providers, Number(req.params.provider_id));
+    const provider: ServiceProvider = findElementById(db.service_providers, Number(req.params.provider_id));
     const service_id = db.services.length + 1;
 
     if (provider) {
@@ -138,6 +138,7 @@ ezfixserver.post("/service/:provider_id", function (req: express.Request, res: e
             service.payment_online
         ));
 
+        provider.increase_jobs_number();
         res.send({ "success": "Successful service create" });
 
         return;

@@ -38,6 +38,7 @@ Feature: as a customer
         Then I go to the "Contracts board view" page
         Then I can't see the payment status is "pending"
 
+    # Service
     Scenario: Creating a new service
         Given the system has two services registered with id "1" and id "2"
         Given the system has no service with id "3"
