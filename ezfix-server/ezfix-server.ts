@@ -21,6 +21,8 @@ db.service_providers.push(new ServiceProvider(
 db.service_providers.push(new ServiceProvider(2, "Flávio", "Cap", "I'm Good", "House Cleaning", "https://randomuser.me/api/portraits/men/3.jpg"))
 db.service_providers.push(new ServiceProvider(3, "Barnabé", "Cap", "I'm better", "House Cleaning", "https://randomuser.me/api/portraits/men/29.jpg"))
 db.service_providers.push(new ServiceProvider(4, "Joana", "Cap", "I'm way better", "House Cleaning", "https://randomuser.me/api/portraits/women/2.jpg"))
+db.service_providers.push(new ServiceProvider(5, "Maria", "Bonita", "I'm way even better", "Eletric Repair", "https://randomuser.me/api/portraits/women/7.jpg"))
+db.service_providers.push(new ServiceProvider(6, "Davi", "Notorius", "I'm way more expensive", "Plumbing", "https://randomuser.me/api/portraits/men/25.jpg"))
 
 db.cards.push(new Card("Sergio Soares", "1111222233334444", "101", 11, 2025))
 db.cards.push(new Card("Sergio Soares", "2222333344445555", "202", 11, 2025))
@@ -242,6 +244,12 @@ ezfixserver.get("/cardslist/:client_id", function (req: express.Request, res: ex
         }
     }
     res.send({ "failure": "Get cards list error" });
+})
+
+ezfixserver.get("/search/:category", function (req: express.Request, res: express.Response) {
+    const providerList = db.service_providers.filter((provider) => provider.category.includes(req.params.category))
+    res.send(JSON.stringify(providerList));
+    return;
 })
 
 var server = ezfixserver.listen(3000, function () {
