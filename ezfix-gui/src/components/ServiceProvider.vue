@@ -1,15 +1,19 @@
 <template>
   <div class="column">
     <v-btn width="200px" height="300px" class="ma-2" outlined color="#2178B7">
-      <span class="dot"></span>
-      <h3 id="provider">Provider Name</h3>
-      <h3 id="jobs">N jobs</h3>
-      <h3 id="rating">nota/5</h3>
+      <img :src="avatarURL" class="dot" />
+      <h3 id="provider">{{ name }}</h3>
+      <h3 id="jobs">{{ jobs }} jobs</h3>
+      <h3 id="rating">{{ evaluation }}/5</h3>
     </v-btn>
   </div>
 </template>
 
 <style scoped>
+div {
+  margin-left: 3vw;
+  margin-right: 3vw;
+}
 .v-btn {
   position: relative;
 }
@@ -36,8 +40,17 @@
   height: 100px;
   width: 100px;
   top: -130px;
-  background-color: #bbb;
   border-radius: 50%;
-  display: inline-block;
 }
 </style>
+
+<script>
+export default {
+  props: {
+    name: String,
+    jobs: Number,
+    evaluation: Number,
+    avatarURL: String,
+  },
+};
+</script>

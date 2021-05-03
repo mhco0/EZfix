@@ -3,9 +3,9 @@
     <img src="../assets/electrician.png" alt="" />
     <MainHomeText />
     <GetStarted />
-    <ServiceButtonHouse />
-    <ServiceButtonEletric />
-    <ServiceButtonPlumbing />
+    <ServiceButtonHouse category="houseCleanIcon" />
+    <ServiceButtonEletric category="houseCleanIcon" />
+    <ServiceButtonPlumbing category="plumbing" />
   </div>
 </template>
 

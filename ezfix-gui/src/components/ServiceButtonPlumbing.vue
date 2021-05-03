@@ -1,8 +1,8 @@
 
 <template>
   <div>
-    <v-btn width="200px" height="200px" color="#2278B7">
-      <v-icon size="180"> $plumbing </v-icon>
+    <v-btn width="200px" height="200px" color="#2278B7" @click="callSearchPage">
+      <v-icon size="180"> ${{ category }} </v-icon>
     </v-btn>
     <h6>Plumbing</h6>
   </div>
@@ -32,3 +32,17 @@ h6 {
 }
 </style>
 
+<script>
+export default {
+  props: {
+    category: String,
+  },
+  methods: {
+    callSearchPage() {
+      this.$router.push({
+        path: `/search/Plumbing`,
+      });
+    },
+  },
+};
+</script>
