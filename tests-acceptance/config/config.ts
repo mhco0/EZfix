@@ -12,7 +12,7 @@ export let config: Config = {
     frameworkPath: require.resolve('protractor-cucumber-framework'),
 
     specs: [
-        '../../features/payment.feature'
+        '../../features/choseCategory.feature'
     ],
 
     onPrepare: () => {
