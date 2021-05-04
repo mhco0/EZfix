@@ -1,18 +1,8 @@
 import request = require("request-promise");
+import Utils from "../schemas/utils";
 
-var base_url = "http://localhost:3000/";
 
-var client_id = '1';
-
-function makeid(length: number) {
-    var result = [];
-    var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-";
-    var charactersLength = characters.length;
-    for (var i = 0; i < length; i++) {
-        result.push(characters.charAt(Math.floor(Math.random() * charactersLength)));
-    }
-    return result.join('');
-}
+var base_url = "http://localhost:3000";
 
 describe("The server", () => {
     var server: any;
@@ -21,116 +11,49 @@ describe("The server", () => {
 
     afterAll(() => { server.closeServer() });
 
-    it("initially return an empty cards list", () => {
-        return request.get(base_url + "cardslist/" + client_id)
-            .then((body: any) =>
-                expect(body).toEqual('[]')
-            )
-            .catch((e: any) =>
-                expect(e).toEqual(null)
-            );
-    })
-
-    it("initially return an empty contracts list", () => {
-        return request.get(base_url + "listcontracts/" + client_id)
-            .then((body: any) =>
-                expect(body).toEqual('[]')
-            )
-            .catch((e: any) =>
-                expect(e).toEqual(null)
-            );
-    })
-
-    it("declined a payment if the credit card information is wrong", () => {
-        var merchantRefNum = makeid(Math.floor(Math.random() * 10) + 25);
-        var options: any = {
-            method: 'POST', uri: (base_url + "payment/" + client_id), body: {
-                transationID: merchantRefNum,
-                amount: 30,
-                card: {
-                    cardName: "Sergio Soares",
-                    cardNum: "1111222233334444",
-                    cvv: "102",
-                    expiryMonth: 11,
-                    expiryYear: 2025,
-                },
-                saveCard: true
+    it("adding a new message to chat service", () => {
+        let options: any = {
+            method: 'POST', uri: (base_url + "/chat/1"), body: {
+                bytes : JSON.stringify({
+                    type : 'message',
+                    content: 'a new message teste'
+                })
             }, json: true
         };
-        return request(options)
-            .then((body: any) =>
-                expect(body).toEqual({ failure: "Payment error" })
-            ).catch((e: any) =>
-                expect(e).toEqual(null)
-            )
+
+        return request.post(options).then((body : any) => {
+                expect(body).toEqual({
+                    "success" : "message added on chat service"
+                });
+            }).catch((error: any) => {
+                expect(error).toEqual(null);
+            });
     });
 
-    it("approve a payment if the credit card is valid", () => {
-        var merchantRefNum = makeid(Math.floor(Math.random() * 10) + 25);
-        var options: any = {
-            method: 'POST', uri: (base_url + "payment/" + client_id), body: {
-                transationID: merchantRefNum,
-                amount: 30,
-                card: {
-                    cardName: "Sergio Soares",
-                    cardNum: "1111222233334444",
-                    cvv: "101",
-                    expiryMonth: 11,
-                    expiryYear: 2025,
-                },
-                saveCard: true
+    it("failing in add a new message to chat service", () => {
+        let options: any = {
+            method: 'POST', uri: (base_url + "/chat/1"), body: {
+                bytes : JSON.stringify({
+                    type : 'message',
+                    content: ''
+                })
             }, json: true
         };
-        return request(options)
-            .then((body: any) =>
-                expect(body).toEqual({ success: "Successful payment" })
-            ).catch((e: any) =>
-                expect(e).toEqual(null)
-            )
+
+        return request.post(options).then((body : any) => {
+                expect(body).toEqual({
+                    "failure" : "message not added on chat service"
+                });
+            }).catch((error: any) => {
+                expect(error).toEqual(null);
+            });
     });
 
-    it("can't update a service that not exist", () => {
+    it("testing if a needCensorship is working", () => {
+        let text: string = "arrombado";
+        let card: string = "5212345678901234";
 
-        var options: any = {
-            method: 'POST', uri: (base_url + "updateservice/1"), body: {
-                "payment_status": true,
-                "payment_online": true
-            }, json: true
-        };
-        return request(options)
-            .then((body: any) =>
-                expect(body).toEqual({ failure: "Error updating service" })
-            ).catch((e: any) =>
-                expect(e).toEqual(null)
-            )
+        expect(Utils.needCensorship(text)).toEqual(true);
+        expect(Utils.needCensorship(card)).toEqual(true);
     });
-
-    it("can update a service that exist", () => {
-        var service = {
-            "json": {
-                "client_id": client_id,
-                "service_provider_id": 1,
-                "payment_status": false,
-                "payment_online": false
-            }
-        }
-
-        var serviceUpdate = { "json": { "payment_status": true, "payment_online": true } }
-
-        return request.post(base_url + "service/1", service)
-            .then((body: any) => {
-                expect(body).toEqual({ success: "Successful service create" })
-                return request.post(base_url + "updateservice/1", serviceUpdate)
-                    .then((body: any) =>
-                        expect(body).toEqual({ success: "Successful service update" })
-                    ).catch((e: any) =>
-                        expect(e).toEqual(null)
-                    )
-            }).catch((e: any) =>
-                expect(e).toEqual(null)
-            )
-    });
-
-
-
 })

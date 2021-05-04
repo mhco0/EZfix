@@ -6,7 +6,8 @@ import { db } from "./database"
 import { Client, ServiceProvider } from './schemas/users';
 import { Service } from './schemas/service';
 import { Card } from "./schemas/card";
-import { Message } from './schemas/chat';
+import { Message, messageValidContent} from './schemas/chat';
+import Utils from './schemas/utils';
 
 //Adicionando o cliente
 db.clients.push(new Client(1, "Sérgio"))
@@ -30,6 +31,8 @@ db.cards.push(new Card("Thalisson Tavares", "3333444455556666", "404", 11, 2025)
 db.cards.push(new Card("Gabriel Marques", "4444555566667777", "505", 11, 2025))
 db.cards.push(new Card("Luis Pereira", "5555666677778888", "606", 11, 2025))
 db.cards.push(new Card("Marcos Heitor", "6666777788889999", "707", 11, 2025))
+
+db.services.push(new Service(1, 1, 1, true, true));
 
 var ezfixserver = express();
 
@@ -162,7 +165,6 @@ ezfixserver.post("/updateservice/:service_id", function (req: express.Request, r
 
         return;
 
-
     }
     res.send({ "failure": "Error updating service" });
 })
@@ -247,20 +249,36 @@ ezfixserver.get("/cardslist/:client_id", function (req: express.Request, res: ex
 
 ezfixserver.post("/chat/:service_id", function (req: express.Request, res: express.Response) {
     const service = db.services.find(el => el.id == Number(req.params.service_id));
+    let objInfo = JSON.parse(req.body.bytes);
 
-    if(service){
+    if(service && messageValidContent(objInfo)){
 
-        let objInfo = JSON.parse(req.body.bytes);
-        
         if(objInfo.type === "time_message"){
             service.getChat().addTimeMessage(objInfo.sender, objInfo.appointments);
         }else{
+
+            if(Utils.needCensorship(objInfo.content)){
+                let copyContent : string = "";
+
+                for(let i = 0; i < objInfo.content.length; i++){
+                    if(isNaN(Number(objInfo.content.charAt(i)))){
+                       copyContent += '*';
+                    }else{
+                        copyContent += objInfo.content.charAt(i);
+                    }
+                }
+
+                objInfo.content = copyContent;
+            }
+
             service.getChat().addMessage(objInfo.sender, objInfo.content);
         }
 
         res.send({
             "success" : "message added on chat service"
         });
+
+        return;
     }
 
     res.send({
@@ -282,7 +300,10 @@ ezfixserver.get("/chat/:service_id", function (req: express.Request, res: expres
             responseArray.push(convertedMessage);
         });
 
-        res.send(JSON.stringify(responseArray));
+
+        res.send({bytes: JSON.stringify(responseArray)});
+
+        return;
     }
 
     res.send({

@@ -1,5 +1,15 @@
 import Utils from "./utils";
 
+export function messageValidContent(messageJson: any){
+    if(messageJson.type == "message"){
+        return messageJson.content != '';
+    }else if(messageJson.type == "time_message"){
+        return (messageJson.appointments.length > 0);
+    }
+
+    return false;
+}
+
 export type SenderType = "client" | "provider";
 
 export class Message {
@@ -8,6 +18,7 @@ export class Message {
 
     constructor(sender: SenderType, content: string){
         this.content = content;
+        this.sender = sender;
     }
 
     getContent(){

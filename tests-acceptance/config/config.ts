@@ -14,11 +14,7 @@ export let config: Config = {
     frameworkPath: require.resolve('protractor-cucumber-framework'),
 
     specs: [
-<<<<<<< HEAD
-        '../../features/payment.feature'
-=======
         '../../features/chat.feature'
->>>>>>> Adding first scenario for feature
     ],
 
     onPrepare: () => {

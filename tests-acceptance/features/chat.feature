@@ -1,24 +1,16 @@
 Feature: Chat de usuários
         I want to die
 
-Scenario: Marcação de um horário
-	Given Eu estou na página "Chat"
-	When Eu interajo com a interface de criação de horário
-	Then Eu sugiro alguns dos meus "horários" 
-	Then Espero a confirmação do "Provedor"
-
 Scenario: Envio de mensagem
-	Given Eu estou na página "Chat"
-	Given Eu não consigo ver a mensagem "Teste"
-	When Eu interajo com a interface envio de mensagem, envio a mensagem "Teste"
-	Then Eu vejo a mensagem "Teste" na página do "Chat"
+	Given O sistema não tem nenhuma mensagem
+	When Eu envio uma mensagem com o conteudo "Teste"
+	Then O sistema tem uma mensagem com o conteudo "Teste"
 
 Scenario: Filtro de mensagem
-	Given Eu estou na página "Chat" como "Cliente"
-	When Eu enviar uma mensagem que tenha "dados indevidos"
-	Then Os "dados indevidos" aparecem "escondidos" na mensagem do "Chat"
-	Then A mensagem é enviada para o "Provedor" com os "dados indevidos" estando "escondidos" no "Chat"
-	Then Os "dados indevidos" não são salvos
+	Given O sistema não tem mensagens indevidas
+	When Eu enviar uma mensagem que tenha o palavrão "porra"
+	Then O sistema esconde a palavra "porra" como "*****" na mensagem
+	Then O sistema não salva a palavra "porra"
 
 Scenario: Uso de mensagem pré-gravada
 	Given Eu estou na página "Chat" como "Cliente"
@@ -40,11 +32,3 @@ Scenario: Falha na marcação de horário
 	When Não preencho os horários disponiveis
 	Then A mensagem de marcação de horário não é enviada
 	Then O sistema espera os horários serem preenchidos
-
-Scenario: Confirmação de um horário
-	Given Eu estou na página "Chat" como "Cliente"
-	Given Me foi enviada uma mensagem de marcação de horário
-	When Eu interajo com a mensagem de marcação de horário
-	When Eu preencho meu horário dispónivel
-	Then Aparece o horário que eu preenchi na página do "Chat" 
-	Then Meu horário é enviado ao "Provedor"

@@ -38,9 +38,13 @@
     import AppointmentClock from "../components/AppointmentClock";
     import RecordedMessage from "../components/RecordedMessage";
     import Message from '../components/Message.vue';
+    import ChatApi from "../api/chat";
 
     export default {
         name: "Chat",
+        create: function () {
+            this.fetchMessagesFromServer();
+        },
         mounted: function() {
             this.isProvider = (this.$route.params.provider_id !== undefined)  ? true : false;
             this.service_id = this.$route.params.service_id;
@@ -61,7 +65,7 @@
             };
         },
         methods: {
-            sendMessageToServer(content_text){
+            async sendMessageToServer(content_text){
                 let obj = {
                     sender : this.sender,
                     type: "message", 
@@ -69,12 +73,16 @@
                     appointments: []
                 };
 
-                ChatApi.sendMessage(this.service_id, JSON.stringify(obj)).then(() => {
-                    this.fetchMessagesFromServer();
-                });
+                await ChatApi.sendMessage(this.service_id, JSON.stringify(obj));
+                let response = await ChatApi.fetchMessageLists(this.service_id);
+
+                if(!response.data.failure){
+                    this.messageList = JSON.parse(response.data.bytes);
+                    console.log(this.messageList);
+                }
             },
 
-            sendTimeMessageToServer(appointments_array){
+            async sendTimeMessageToServer(appointments_array){
                 let new_appointments_arr = [];
                 // Vue can't let you assing the direct array
                 // Eu posso refatorar aqui usando o JSON.strigifly and JSON.parse para fazer a deep copy dos objetos
@@ -89,17 +97,20 @@
                     appointments: new_appointments_arr
                 };
 
-                ChatApi.sendMessage(this.service_id, JSON.stringify(obj)).then(() => {
-                    this.fetchMessagesFromServer();
-                });
+                await ChatApi.sendMessage(this.service_id, JSON.stringify(obj));
+                let response = await ChatApi.fetchMessageLists(this.service_id);
+
+                if(!response.data.failure){
+                    this.messageList = JSON.parse(response.data.bytes);
+                }
             },
 
-            fetchMessagesFromServer(){
-                ChatApi.fetchMessageLists(this.service_id).then((res) => {
-                    if(!res.data.failure){
-                        this.messageList = JSON.parse(res.data.bytes);
-                    }
-                });
+            async fetchMessagesFromServer(){
+                let response = await ChatApi.fetchMessageLists(this.service_id);
+
+                if(!response.data.failure){
+                    this.messageList = JSON.parse(response.data.bytes);
+                }
             },
 
             pollData(){
