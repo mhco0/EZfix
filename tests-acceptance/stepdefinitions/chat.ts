@@ -72,4 +72,22 @@ defineSupportCode(function ({ Given, When, Then }) {
             expect(JSON.parse(res).bytes.includes(JSON.stringify({type: "message", content: curse}))).to.equal(false);
         });
     });
+
+    Given(/^Eu estou na página Chat$/, async () => {
+        await browser.get(local_url  + "/#/chat/1");
+        await expect(browser.getTitle()).to.eventually.equal('ezfix-gui');
+    });
+
+    When(/^Eu interajo com a interface envio de mensagem, envio a mensagem ""$/, async () => {
+        await (<any> element.all(by.id('chat-input-text-id')).sendKeys("")).sendKeys(protractor.Key.ENTER);
+    });
+
+    Then(/^A mensagem "" não é salva na página do Chat$/, async () => {
+        
+        const messageLits = await element.all(by.css('[name="message-name"]'));
+
+        for(let i = 0; i < messageLits.length; i++){
+            await expect(messageLits[i].getAttribute('text')).to.not.eventually.equal("");
+        }
+    });
 })
