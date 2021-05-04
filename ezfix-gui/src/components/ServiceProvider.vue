@@ -2,6 +2,7 @@
   <div class="column">
     <v-btn width="200px" height="300px" class="ma-2" outlined color="#2178B7">
       <img :src="avatarURL" class="dot" />
+      <h3 id="category">{{ category }}</h3>
       <h3 id="provider">{{ name }}</h3>
       <h3 id="jobs">{{ jobs }} jobs</h3>
       <h3 id="rating">{{ evaluation }}/5</h3>
@@ -35,6 +36,12 @@ div {
   align-content: center;
   color: #000000;
 }
+#category {
+  position: absolute;
+  top: 75px;
+  align-content: center;
+  color: #000000;
+}
 .dot {
   position: absolute;
   height: 100px;
@@ -51,6 +58,7 @@ export default {
     jobs: Number,
     evaluation: Number,
     avatarURL: String,
+    category: String,
   },
 };
 </script>

@@ -1,7 +1,13 @@
 
 <template>
   <div>
-    <v-btn width="200px" height="200px" color="#2278B7" @click="callSearchPage">
+    <v-btn
+      width="200px"
+      height="200px"
+      color="#2278B7"
+      @click="callSearchPage"
+      id="Plumbing Button"
+    >
       <v-icon size="180"> ${{ category }} </v-icon>
     </v-btn>
     <h6>Plumbing</h6>

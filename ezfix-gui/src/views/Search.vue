@@ -6,6 +6,8 @@
     </h1>
     <v-row id="rowID" justify="center">
       <ServiceProvider
+        id="ServiceProviderCard07"
+        :category="provider.category"
         :name="provider.first_name + ' ' + provider.last_name"
         :key="provider.id"
         :jobs="provider.jobs_number"
