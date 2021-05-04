@@ -6,7 +6,7 @@ export class Service {
     client_id: number;
     service_provider_id: number;
     evaluation?: Evaluation;
-    chat?: Chat;
+    private chat: Chat;
     payment_status: Boolean = false;
     payment_online: Boolean = false;
 
@@ -16,6 +16,7 @@ export class Service {
         this.service_provider_id = service_provider_id;
         this.payment_status = payment_status;
         this.payment_online = payment_online;
+        this.chat = new Chat();
     }
 
     evaluate(evaluation: Evaluation): Evaluation {
@@ -32,5 +33,9 @@ export class Service {
 
     updatePaymentForm(payment_online: Boolean) {
         this.payment_online = payment_online;
+    }
+    
+    getChat(){
+        return this.chat;
     }
 }

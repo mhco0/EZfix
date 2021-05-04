@@ -36,8 +36,13 @@ const routes = [
     component: Contracts,
   },
   {
-    path: "/chat/:provider_id/:client_id",
-    name: "Chat",
+    path: "/chat/:service_id",
+    name: "ChatClient",
+    component: Chat,
+  },
+  {
+    path: "/chat/:service_id/:provider_id",
+    name: "ChatProvider",
     component: Chat,
   },
   {

@@ -6,6 +6,8 @@ import { db } from "./database"
 import { Client, ServiceProvider } from './schemas/users';
 import { Service } from './schemas/service';
 import { Card } from "./schemas/card";
+import { Message, messageValidContent} from './schemas/chat';
+import Utils from './schemas/utils';
 
 //Adicionando o cliente
 db.clients.push(new Client(1, "Sérgio"))
@@ -244,6 +246,70 @@ ezfixserver.get("/cardslist/:client_id", function (req: express.Request, res: ex
         }
     }
     res.send({ "failure": "Get cards list error" });
+})
+
+ezfixserver.post("/chat/:service_id", function (req: express.Request, res: express.Response) {
+    const service = db.services.find(el => el.id == Number(req.params.service_id));
+    let objInfo = JSON.parse(req.body.bytes);
+
+    if(service && messageValidContent(objInfo)){
+
+        if(objInfo.type === "time_message"){
+            service.getChat().addTimeMessage(objInfo.sender, objInfo.appointments);
+        }else{
+
+            if(Utils.needCensorship(objInfo.content)){
+                let copyContent : string = "";
+
+                for(let i = 0; i < objInfo.content.length; i++){
+                    if(isNaN(Number(objInfo.content.charAt(i)))){
+                       copyContent += '*';
+                    }else{
+                        copyContent += objInfo.content.charAt(i);
+                    }
+                }
+
+                objInfo.content = copyContent;
+            }
+
+            service.getChat().addMessage(objInfo.sender, objInfo.content);
+        }
+
+        res.send({
+            "success" : "message added on chat service"
+        });
+
+        return;
+    }
+
+    res.send({
+        "failure" : "message not added on chat service"
+    });
+})
+
+ezfixserver.get("/chat/:service_id", function (req: express.Request, res: express.Response) {
+    const service = db.services.find(el => el.id == Number(req.params.service_id));
+
+    if(service){
+        let messages: Array<Message> = service.getChat().getMessages();
+
+        let responseArray: Array<any> = [];
+
+        messages.forEach(element => {
+            let convertedMessage = element.toJson();
+
+            responseArray.push(convertedMessage);
+        });
+
+
+        res.send({bytes: JSON.stringify(responseArray)});
+
+        return;
+    }
+
+    res.send({
+        "failure" : "service not found"
+    });
 })
 
 ezfixserver.get("/search/:category", function (req: express.Request, res: express.Response) {

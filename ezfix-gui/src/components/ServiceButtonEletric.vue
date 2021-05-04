@@ -1,4 +1,3 @@
-
 <template>
   <div>
     <v-btn width="200px" height="200px" color="#2278B7" @click="callSearchPage">
@@ -43,4 +42,3 @@ export default {
   },
 };
 </script>
-
