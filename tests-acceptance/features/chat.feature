@@ -1,12 +1,12 @@
 Feature: Chat de usuários
-        I want to die
+    I want to send safe messages for the server and see them on chat
 
-Scenario: Envio de mensagem
+Scenario: Envio de mensagem (servidor)
 	Given O sistema não tem nenhuma mensagem
 	When Eu envio uma mensagem com o conteudo "Teste"
 	Then O sistema tem uma mensagem com o conteudo "Teste"
 
-Scenario: Filtro de mensagem
+Scenario: Filtro de mensagem (servidor)
 	Given O sistema não tem mensagens indevidas
 	When Eu enviar uma mensagem que tenha o palavrão "porra"
 	Then O sistema esconde a palavra "porra" como "*****" na mensagem
