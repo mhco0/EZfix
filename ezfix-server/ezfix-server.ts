@@ -23,6 +23,8 @@ db.service_providers.push(new ServiceProvider(
 db.service_providers.push(new ServiceProvider(2, "Flávio", "Cap", "I'm Good", "House Cleaning", "https://randomuser.me/api/portraits/men/3.jpg"))
 db.service_providers.push(new ServiceProvider(3, "Barnabé", "Cap", "I'm better", "House Cleaning", "https://randomuser.me/api/portraits/men/29.jpg"))
 db.service_providers.push(new ServiceProvider(4, "Joana", "Cap", "I'm way better", "House Cleaning", "https://randomuser.me/api/portraits/women/2.jpg"))
+db.service_providers.push(new ServiceProvider(5, "Maria", "Bonita", "I'm way even better", "Eletric Repair", "https://randomuser.me/api/portraits/women/7.jpg"))
+db.service_providers.push(new ServiceProvider(6, "Davi", "Notorius", "I'm way more expensive", "Plumbing", "https://randomuser.me/api/portraits/men/25.jpg"))
 
 db.cards.push(new Card("Sergio Soares", "1111222233334444", "101", 11, 2025))
 db.cards.push(new Card("Sergio Soares", "2222333344445555", "202", 11, 2025))
@@ -31,8 +33,6 @@ db.cards.push(new Card("Thalisson Tavares", "3333444455556666", "404", 11, 2025)
 db.cards.push(new Card("Gabriel Marques", "4444555566667777", "505", 11, 2025))
 db.cards.push(new Card("Luis Pereira", "5555666677778888", "606", 11, 2025))
 db.cards.push(new Card("Marcos Heitor", "6666777788889999", "707", 11, 2025))
-
-db.services.push(new Service(1, 1, 1, true, true));
 
 var ezfixserver = express();
 
@@ -164,6 +164,7 @@ ezfixserver.post("/updateservice/:service_id", function (req: express.Request, r
         res.send({ "success": "Successful service update" });
 
         return;
+
 
     }
     res.send({ "failure": "Error updating service" });
@@ -311,9 +312,15 @@ ezfixserver.get("/chat/:service_id", function (req: express.Request, res: expres
     });
 })
 
-const server = ezfixserver.listen(3000, function () {
+ezfixserver.get("/search/:category", function (req: express.Request, res: express.Response) {
+    const providerList = db.service_providers.filter((provider) => provider.category.includes(req.params.category))
+    res.send(JSON.stringify(providerList));
+    return;
+})
+
+var server = ezfixserver.listen(3000, function () {
     console.log('EZfix app listening on port 3000!')
-});
+})
 
 function closeServer(): void {
     server.close();

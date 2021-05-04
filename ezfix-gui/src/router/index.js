@@ -46,7 +46,7 @@ const routes = [
     component: Chat,
   },
   {
-    path: "/search",
+    path: "/search/:category",
     name: "Search",
     component: Search,
   }

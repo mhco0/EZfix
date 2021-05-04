@@ -1,7 +1,6 @@
-
 <template>
   <div>
-    <v-btn width="200px" height="200px" color="#2278B7">
+    <v-btn width="200px" height="200px" color="#2278B7" @click="callSearchPage">
       <v-icon size="180"> $houseCleanIcon </v-icon>
     </v-btn>
     <h6>Eletric Repair</h6>
@@ -32,3 +31,14 @@ h6 {
 }
 </style>
 
+<script>
+export default {
+  methods: {
+    callSearchPage() {
+      this.$router.push({
+        path: `/search/Eletric`,
+      });
+    },
+  },
+};
+</script>
