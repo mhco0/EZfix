@@ -19,7 +19,6 @@ Scenario: Falha no Envio de mensagem (gui)
 
 Scenario: Falha na marcação de horário (gui)
 	Given Eu estou na página Chat
-	When Eu interajo com a interface de criação de horário
-	When Não preencho os horários disponiveis
-	Then A mensagem de marcação de horário não é enviada
-	Then O sistema espera os horários serem preenchidos
+	Given Eu estou sem horários preenchidos
+	When Eu interajo com a interface de criação de horário, enviando os horários
+	Then A pagina do Chat me alerta

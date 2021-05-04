@@ -83,11 +83,30 @@ defineSupportCode(function ({ Given, When, Then }) {
     });
 
     Then(/^A mensagem "" não é salva na página do Chat$/, async () => {
-        
         const messageLits = await element.all(by.css('[name="message-name"]'));
 
         for(let i = 0; i < messageLits.length; i++){
             await expect(messageLits[i].getAttribute('text')).to.not.eventually.equal("");
         }
+    });
+
+    Given(/^Eu estou sem horários preenchidos$/, async () => { 
+        const clockComponent = await element.all(by.css('[name="clock-input-field"]'));
+
+        for(let i = 0; i < clockComponent.length; i++){
+            await expect(clockComponent[i].getAttribute('text')).to.not.eventually.equal("");
+        }
+    });
+
+    When(/^Eu interajo com a interface de criação de horário, enviando os horários$/, async () => {
+        await (element(by.id('appointment-clock-id')).click());
+        await (element.all(by.id('check-appointment-id')).click());
+    });
+
+    Then(/^A pagina do Chat me alerta$/, async () => {
+        const alert = await browser.switchTo().alert();
+
+        await expect(alert.getText()).to.eventually.equal("Selecione pelo menos um hórario.");
+        await alert.dismiss();
     });
 })

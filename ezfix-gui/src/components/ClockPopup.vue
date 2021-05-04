@@ -12,6 +12,7 @@
     >
         <template v-slot:activator="{ on, attrs }">
             <v-text-field
+            name="clock-input-field"
             :rules="definedRule"
             v-model="time"
             :label="clockLabel"
